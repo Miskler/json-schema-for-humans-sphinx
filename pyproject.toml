@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stoplightio-schema-sphinx"
+version = "0.1.0"
+authors = [{ name = "Miskler" }]
+description = "Sphinx extension to include Stoplight.io style JSON schemas"
+readme = "README.rst"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Framework :: Sphinx",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "sphinx",
+    "sphinx-testing",
+]
+
+[tool.setuptools]
+packages = ["stoplightio_schema_sphinx"]
+package-dir = {"" = "src"}

@@ -1,0 +1,9 @@
+{
+  "title": "AddArguments",
+  "type": "object",
+  "properties": {
+    "a": {"type": "integer"},
+    "b": {"type": "integer"}
+  },
+  "required": ["a", "b"]
+}
