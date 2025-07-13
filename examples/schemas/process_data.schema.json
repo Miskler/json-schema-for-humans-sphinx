@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "Process Data",
+  "description": "Schema for data processing function",
+  "properties": {
+    "input_data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Record ID"
+          },
+          "value": {
+            "type": "string",
+            "description": "Record value"
+          }
+        },
+        "required": ["id", "value"]
+      },
+      "description": "Input data array"
+    },
+    "options": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "enum": ["json", "csv", "xml"],
+          "default": "json",
+          "description": "Output format"
+        },
+        "validate": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to validate data"
+        }
+      },
+      "description": "Processing options"
+    }
+  },
+  "required": ["input_data"],
+  "additionalProperties": false
+}
