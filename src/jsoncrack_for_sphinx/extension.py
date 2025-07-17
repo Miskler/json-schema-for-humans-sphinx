@@ -125,16 +125,17 @@ class SchemaDirective(SphinxDirective):
             return f"<div class='error'>Error processing schema file {schema_path.name}: {str(e)}</div>"
 
 
-def find_schema_for_object(obj_name: str, schema_dir: str) -> Optional[Path]:
+def find_schema_for_object(obj_name: str, schema_dir: str) -> Optional[Tuple[Path, str]]:
     """
     Find schema file for a given object (function/method).
     
     Args:
-        obj_name: Full name of the object (e.g., "MyClass.my_method")
+        obj_name: Full name of the object (e.g., "example_module.User.create")
         schema_dir: Directory containing schema files
     
     Returns:
-        Path to schema file if found, None otherwise
+        Tuple of (Path to schema file, file type) if found, None otherwise
+        File type is either 'schema' for .schema.json files or 'json' for .json files
     """
     if not schema_dir:
         return None
@@ -153,24 +154,24 @@ def find_schema_for_object(obj_name: str, schema_dir: str) -> Optional[Path]:
     else:
         short_name = obj_name
     
-    # Try different naming patterns
+    # Try different naming patterns, prioritizing .schema.json files
     patterns = [
-        f"{short_name}.schema.json",        # User.create.schema.json
-        f"{short_name}.json",               # User.create.json
-        f"{obj_name}.schema.json",          # example_module.User.create.schema.json
-        f"{obj_name}.json",                 # example_module.User.create.json
+        (f"{short_name}.schema.json", "schema"),        # User.create.schema.json
+        (f"{short_name}.json", "json"),                 # User.create.json
+        (f"{obj_name}.schema.json", "schema"),          # example_module.User.create.schema.json
+        (f"{obj_name}.json", "json"),                   # example_module.User.create.json
     ]
     
-    for pattern in patterns:
+    for pattern, file_type in patterns:
         schema_path = schema_dir_path / pattern
         if schema_path.exists():
-            return schema_path
+            return schema_path, file_type
     
     return None
 
 
-def generate_schema_html(schema_path: Path, app_config=None) -> str:
-    """Generate HTML representation of a JSON schema for JSONCrack."""
+def generate_schema_html(schema_path: Path, file_type: str, app_config=None) -> str:
+    """Generate HTML representation of a JSON schema or JSON data for JSONCrack."""
     try:
         # Default config values if not provided
         render_mode = getattr(app_config, 'jsoncrack_render_mode', 'onclick') if app_config else 'onclick'
@@ -181,12 +182,29 @@ def generate_schema_html(schema_path: Path, app_config=None) -> str:
         
         # Read schema file
         with open(schema_path, 'r', encoding='utf-8') as f:
-            schema_json = json.load(f)
+            data = json.load(f)
+            
+        # Process data based on file type
+        if file_type == 'schema':
+            # For .schema.json files, generate fake data using JSF
+            try:
+                from jsf import JSF
+                fake_data = JSF(data).generate()
+                json_data = fake_data
+            except ImportError:
+                logger.warning("jsf library not available, using schema as-is")
+                json_data = data
+            except Exception as e:
+                logger.warning(f"Error generating fake data with JSF: {e}, using schema as-is")
+                json_data = data
+        else:
+            # For .json files, use data as-is
+            json_data = data
             
         # Передаем JSON как строковый атрибут data-schema
         # Используем html.escape для экранирования JSON в HTML-атрибуте
         import html
-        schema_str = html.escape(json.dumps(schema_json))
+        schema_str = html.escape(json.dumps(json_data))
         
         # Create HTML for JSONCrack visualization
         html_content = f'''
@@ -225,19 +243,20 @@ def autodoc_process_signature(app: Sphinx, what: str, name: str, obj: Any,
     logger.info(f"Looking for schema in {schema_dir} for {name}")
     
     # Find schema file
-    schema_path = find_schema_for_object(name, schema_dir)
-    if not schema_path:
+    schema_result = find_schema_for_object(name, schema_dir)
+    if not schema_result:
         logger.info(f"No schema found for {name}")
         return None
         
-    logger.info(f"Found schema: {schema_path}")
+    schema_path, file_type = schema_result
+    logger.info(f"Found schema: {schema_path} (type: {file_type})")
     
-    # Store schema path to be used later
+    # Store schema path and type to be used later
     if not hasattr(app.env, '_jsoncrack_schema_paths'):
         setattr(app.env, '_jsoncrack_schema_paths', {})
     
     schema_paths = getattr(app.env, '_jsoncrack_schema_paths')
-    schema_paths[name] = str(schema_path)
+    schema_paths[name] = (str(schema_path), file_type)
     
     return None
 
@@ -255,17 +274,24 @@ def autodoc_process_docstring(app: Sphinx, what: str, name: str, obj: Any,
         return
     
     schema_paths = getattr(app.env, '_jsoncrack_schema_paths')
-    schema_path_str = schema_paths.get(name)
-    if not schema_path_str:
+    schema_data = schema_paths.get(name)
+    if not schema_data:
         logger.info(f"No schema path found for {name}")
         return
     
-    logger.info(f"Adding schema to docstring for {name}: {schema_path_str}")
+    if isinstance(schema_data, str):
+        # Backward compatibility: if it's just a string, assume it's a schema file
+        schema_path_str = schema_data
+        file_type = 'schema'
+    else:
+        schema_path_str, file_type = schema_data
+    
+    logger.info(f"Adding schema to docstring for {name}: {schema_path_str} (type: {file_type})")
     
     schema_path = Path(schema_path_str)
     
     # Generate schema HTML
-    html_content = generate_schema_html(schema_path, app.config)
+    html_content = generate_schema_html(schema_path, file_type, app.config)
     
     # Add schema HTML to docstring
     lines.extend([

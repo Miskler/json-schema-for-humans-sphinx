@@ -38,7 +38,7 @@ json_schema_dir = os.path.join(os.path.dirname(__file__), '..', 'schemas')
 # JSONCrack configuration
 jsoncrack_render_mode = 'onclick'  # 'onclick' or 'onload'
 jsoncrack_theme = None  # 'light', 'dark' or None (auto-detect from page)
-jsoncrack_direction = 'RIGHT'  # 'TOP', 'RIGHT', 'DOWN', 'LEFT'
+jsoncrack_direction = 'DOWN'  # 'TOP', 'RIGHT', 'DOWN', 'LEFT'
 jsoncrack_height = '500'  # в пикселях
 jsoncrack_width = '100%'  # в пикселях или процентах
 

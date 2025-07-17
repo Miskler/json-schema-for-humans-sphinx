@@ -58,6 +58,26 @@ class User:
         }
 
 
+    def example(self) -> Dict[str, Any]:
+        """
+        Get an example user object.
+        
+        This method returns an example user object structure.
+        The example data is automatically loaded from
+        ``User.example.json``.
+        
+        Returns:
+            Example user object
+        """
+        return {
+            "id": 123,
+            "name": "John Doe",
+            "email": "john.doe@example.com",
+            "active": True,
+            "roles": ["user", "admin"]
+        }
+
+
 def process_data(data: List[Dict[str, Any]], options: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """
     Process input data according to specified options.

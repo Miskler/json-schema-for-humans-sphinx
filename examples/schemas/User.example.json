@@ -1,0 +1,17 @@
+{
+  "id": 123,
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "active": true,
+  "roles": ["user", "admin"],
+  "profile": {
+    "age": 30,
+    "location": "San Francisco",
+    "preferences": {
+      "theme": "dark",
+      "notifications": true
+    }
+  },
+  "created_at": "2023-01-15T10:30:00Z",
+  "last_login": "2023-12-01T14:22:33Z"
+}

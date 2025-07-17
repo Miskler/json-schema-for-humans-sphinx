@@ -28,7 +28,8 @@ classifiers = [
     "Topic :: Documentation :: Sphinx",
 ]
 dependencies = [
-    "sphinx>=4.0.0"
+    "sphinx>=4.0.0",
+    "jsf>=0.8.0"
 ]
 
 [project.optional-dependencies]
