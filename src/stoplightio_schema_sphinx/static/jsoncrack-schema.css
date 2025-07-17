@@ -1,0 +1,43 @@
+/**
+ * JSONCrack Sphinx extension styles
+ */
+
+.jsoncrack-container {
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.jsoncrack-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-bottom: 10px;
+    transition: background-color 0.2s;
+}
+
+.jsoncrack-button:hover {
+    background-color: #0069d9;
+}
+
+/* Dark mode support */
+.dark-mode .jsoncrack-container,
+body.dark .jsoncrack-container {
+    background-color: #2d333b;
+}
+
+.dark-mode .jsoncrack-button,
+body.dark .jsoncrack-button {
+    background-color: #3b82f6;
+}
+
+.dark-mode .jsoncrack-button:hover,
+body.dark .jsoncrack-button:hover {
+    background-color: #2563eb;
+}

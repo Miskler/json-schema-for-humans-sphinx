@@ -1,5 +1,5 @@
 """
-Main Sphinx extension module.
+Main Sphinx extension module for JSONCrack JSON schema visualization.
 """
 
 import os
@@ -14,9 +14,6 @@ from sphinx.util.docutils import SphinxDirective
 from sphinx.ext.autodoc import Documenter
 from sphinx.util import logging
 
-from json_schema_for_humans import generate
-from json_schema_for_humans.generation_configuration import GenerationConfiguration
-
 logger = logging.getLogger(__name__)
 
 
@@ -29,6 +26,11 @@ class SchemaDirective(SphinxDirective):
     option_spec = {
         'title': directives.unchanged,
         'description': directives.unchanged,
+        'render_mode': directives.unchanged,
+        'theme': directives.unchanged,
+        'direction': directives.unchanged,
+        'height': directives.unchanged,
+        'width': directives.unchanged,
     }
     
     def run(self) -> List[nodes.Node]:
@@ -71,25 +73,56 @@ class SchemaDirective(SphinxDirective):
         return None
     
     def _generate_schema_html(self, schema_path: Path) -> str:
-        """Generate HTML from schema file using json-schema-for-humans."""
-        # Create configuration for json-schema-for-humans
-        config = GenerationConfiguration(
-            minify=True,
-            deprecated_from_description=True,
-            default_from_description=True,
-            expand_buttons=True,
-            copy_css=False,
-            copy_js=False,
-            template_name="js",
-        )
+        """Generate HTML for JSONCrack visualization of a schema file."""
+        config = self.env.config
         
-        # Generate HTML directly from schema file
-        result = generate.generate_from_schema(
-            schema_file=schema_path,
-            config=config
-        )
+        # Get options from directive or config
+        render_mode = self.options.get('render_mode') or getattr(config, 'jsoncrack_render_mode', 'onclick')
+        theme = self.options.get('theme') or getattr(config, 'jsoncrack_theme', None)
+        direction = self.options.get('direction') or getattr(config, 'jsoncrack_direction', 'RIGHT')
+        height = self.options.get('height') or getattr(config, 'jsoncrack_height', '500')
+        width = self.options.get('width') or getattr(config, 'jsoncrack_width', '100%')
         
-        return result
+        # Read schema file
+        try:
+            with open(schema_path, 'r', encoding='utf-8') as f:
+                schema_json = json.load(f)
+            
+            # Передаем JSON как строковый атрибут data-schema
+            # Используем html.escape для правильного экранирования JSON в HTML-атрибуте
+            import html
+            schema_str = html.escape(json.dumps(schema_json))
+            
+            # Create HTML for JSONCrack visualization
+            html_content = f'''
+            <div class="jsoncrack-container" 
+                 data-schema="{schema_str}"
+                 data-render-mode="{render_mode}"
+                 data-theme="{theme or ''}"
+                 data-direction="{direction}"
+                 data-height="{height}"
+                 data-width="{width}">
+            </div>
+            '''
+            
+            # Add title and description if provided
+            if 'title' in self.options or 'description' in self.options:
+                title = self.options.get('title', '')
+                description = self.options.get('description', '')
+                
+                if title:
+                    html_content = f"<h3>{title}</h3>" + html_content
+                if description:
+                    html_content = f"<p>{description}</p>" + html_content
+            
+            return html_content
+            
+        except json.JSONDecodeError as e:
+            logger.error(f"Invalid JSON in schema file {schema_path}: {e}")
+            return f"<div class='error'>Error: Invalid JSON in schema file {schema_path.name}</div>"
+        except Exception as e:
+            logger.error(f"Error processing schema file {schema_path}: {e}")
+            return f"<div class='error'>Error processing schema file {schema_path.name}: {str(e)}</div>"
 
 
 def find_schema_for_object(obj_name: str, schema_dir: str) -> Optional[Path]:
@@ -129,28 +162,41 @@ def find_schema_for_object(obj_name: str, schema_dir: str) -> Optional[Path]:
     return None
 
 
-def generate_schema_html(schema_path: Path) -> str:
-    """Generate HTML representation of a JSON schema."""
+def generate_schema_html(schema_path: Path, app_config=None) -> str:
+    """Generate HTML representation of a JSON schema for JSONCrack."""
     try:
-        config = GenerationConfiguration(
-            minify=True,
-            deprecated_from_description=True,
-            default_from_description=True,
-            expand_buttons=True,
-            copy_css=False,
-            copy_js=False,
-            template_name="js",
-        )
+        # Default config values if not provided
+        render_mode = getattr(app_config, 'jsoncrack_render_mode', 'onclick') if app_config else 'onclick'
+        theme = getattr(app_config, 'jsoncrack_theme', None) if app_config else None
+        direction = getattr(app_config, 'jsoncrack_direction', 'RIGHT') if app_config else 'RIGHT'
+        height = getattr(app_config, 'jsoncrack_height', '500') if app_config else '500'
+        width = getattr(app_config, 'jsoncrack_width', '100%') if app_config else '100%'
         
-        result = generate.generate_from_schema(
-            schema_file=schema_path,
-            config=config
-        )
+        # Read schema file
+        with open(schema_path, 'r', encoding='utf-8') as f:
+            schema_json = json.load(f)
+            
+        # Передаем JSON как строковый атрибут data-schema
+        # Используем html.escape для экранирования JSON в HTML-атрибуте
+        import html
+        schema_str = html.escape(json.dumps(schema_json))
         
-        return result
+        # Create HTML for JSONCrack visualization
+        html_content = f'''
+        <div class="jsoncrack-container" 
+             data-schema="{schema_str}" 
+             data-render-mode="{render_mode}"
+             data-theme="{theme or ''}"
+             data-direction="{direction}"
+             data-height="{height}"
+             data-width="{width}">
+        </div>
+        '''
+        
+        return html_content
     except Exception as e:
         logger.error(f"Error generating schema HTML for {schema_path}: {e}")
-        return ""
+        return f"<div class='error'>Error processing schema file: {str(e)}</div>"
 
 
 def autodoc_process_signature(app: Sphinx, what: str, name: str, obj: Any, 
@@ -171,16 +217,12 @@ def autodoc_process_signature(app: Sphinx, what: str, name: str, obj: Any,
     if not schema_path:
         return None
     
-    # Generate HTML
-    html_content = generate_schema_html(schema_path)
-    if not html_content:
-        return None
+    # Store schema path to be used later
+    if not hasattr(app.env, '_jsoncrack_schema_paths'):
+        setattr(app.env, '_jsoncrack_schema_paths', {})
     
-    # Store schema HTML to be added later
-    if not hasattr(app.env, 'schema_htmls'):
-        app.env.schema_htmls = {}
-    
-    app.env.schema_htmls[name] = html_content
+    schema_paths = getattr(app.env, '_jsoncrack_schema_paths')
+    schema_paths[name] = str(schema_path)
     
     return None
 
@@ -191,29 +233,38 @@ def autodoc_process_docstring(app: Sphinx, what: str, name: str, obj: Any,
     if what not in ('function', 'method', 'class'):
         return
     
-    if not hasattr(app.env, 'schema_htmls'):
+    if not hasattr(app.env, '_jsoncrack_schema_paths'):
         return
     
-    schema_html = app.env.schema_htmls.get(name)
-    if not schema_html:
+    schema_paths = getattr(app.env, '_jsoncrack_schema_paths')
+    schema_path_str = schema_paths.get(name)
+    if not schema_path_str:
         return
+    
+    schema_path = Path(schema_path_str)
+    
+    # Generate schema HTML
+    html_content = generate_schema_html(schema_path, app.config)
     
     # Add schema HTML to docstring
     lines.extend([
         '',
         '.. raw:: html',
         '',
-        f'   <div class="json-schema-container">',
-        f'   {schema_html}',
-        f'   </div>',
+        f'   {html_content}',
         '',
     ])
 
 
 def setup(app: Sphinx) -> Dict[str, Any]:
     """Set up the Sphinx extension."""
-    # Add configuration value
+    # Add configuration values
     app.add_config_value('json_schema_dir', None, 'env')
+    app.add_config_value('jsoncrack_render_mode', 'onclick', 'env')
+    app.add_config_value('jsoncrack_theme', None, 'env')
+    app.add_config_value('jsoncrack_direction', 'RIGHT', 'env')
+    app.add_config_value('jsoncrack_height', '500', 'env')
+    app.add_config_value('jsoncrack_width', '100%', 'env')
     
     # Add directive
     app.add_directive('schema', SchemaDirective)
@@ -222,10 +273,11 @@ def setup(app: Sphinx) -> Dict[str, Any]:
     app.connect('autodoc-process-signature', autodoc_process_signature)
     app.connect('autodoc-process-docstring', autodoc_process_docstring)
     
-    # Add CSS for styling
+    # Add CSS and JS for styling and functionality
     static_path = Path(__file__).parent / 'static'
     app.config.html_static_path.append(str(static_path))
-    app.add_css_file('stoplightio-schema.css')
+    app.add_css_file('jsoncrack-schema.css')
+    app.add_js_file('jsoncrack-sphinx.js')
     
     return {
         'version': '0.1.0',
