@@ -32,6 +32,23 @@
         return isDarkMode ? 'dark' : 'light';
     }
 
+    // Get localized text based on document language
+    function getLocalizedText(key) {
+        const lang = document.documentElement.lang || 'en';
+        const texts = {
+            'en': {
+                'load': 'Load Schema',
+                'reload': 'Reload Schema'
+            },
+            'ru': {
+                'load': 'Загрузить схему',
+                'reload': 'Перезагрузить схему'
+            }
+        };
+        
+        return texts[lang] ? texts[lang][key] : texts['en'][key];
+    }
+
     // Create a unique ID for each JSONCrack iframe
     function createUniqueId() {
         return 'jsoncrack-' + Math.random().toString(36).substring(2, 15);
@@ -85,22 +102,30 @@
             
             container.appendChild(iframe);
         } else {
-            // For onclick mode, create a button
+            // For onclick mode, create a button that fills the container
             const button = document.createElement('button');
-            button.textContent = 'Показать JSON схему';
+            button.textContent = getLocalizedText('load');
             button.className = 'jsoncrack-button';
+            
+            // Set button size to match the iframe size
+            button.style.width = config.width;
+            button.style.height = config.height + 'px';
+            button.style.minHeight = config.height + 'px';
             
             let iframeLoaded = false;
             
             button.addEventListener('click', () => {
                 if (!iframeLoaded) {
+                    // Replace button with iframe
+                    container.removeChild(button);
                     container.appendChild(iframe);
+                    
                     iframe.addEventListener('load', () => {
                         setTimeout(() => {
                             sendDataToIframe(iframe, schemaData, theme, config.direction);
                         }, 500);
                     });
-                    button.textContent = 'Обновить JSON схему';
+                    
                     iframeLoaded = true;
                 } else {
                     sendDataToIframe(iframe, schemaData, theme, config.direction);
