@@ -29,6 +29,6 @@ User Update Schema with Different Direction
 .. schema:: User.update
    :title: User Update Schema 
    :description: Schema for updating existing users
-   :render_mode: onclick
+   :render_mode: onscreen
    :direction: LEFT
    :theme: dark

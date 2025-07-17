@@ -14,7 +14,57 @@ from sphinx.util.docutils import SphinxDirective
 from sphinx.ext.autodoc import Documenter
 from sphinx.util import logging
 
+from .config import JsonCrackConfig, parse_config, get_config_values
+
 logger = logging.getLogger(__name__)
+
+
+def get_jsoncrack_config(app_config) -> JsonCrackConfig:
+    """Get JSONCrack configuration from Sphinx app config."""
+    
+    # Try to get new-style config first
+    if hasattr(app_config, 'jsoncrack_default_options'):
+        config_dict = app_config.jsoncrack_default_options
+        return parse_config(config_dict)
+    
+    # Fall back to old-style config for backward compatibility
+    from .config import RenderMode, Directions, Theme, ContainerConfig, RenderConfig, JsonCrackConfig
+    
+    # Parse render mode
+    render_mode_str = getattr(app_config, 'jsoncrack_render_mode', 'onclick')
+    if render_mode_str == 'onclick':
+        render_mode = RenderMode.OnClick()
+    elif render_mode_str == 'onload':
+        render_mode = RenderMode.OnLoad()
+    elif render_mode_str == 'onscreen':
+        threshold = getattr(app_config, 'jsoncrack_onscreen_threshold', 0.1)
+        margin = getattr(app_config, 'jsoncrack_onscreen_margin', '50px')
+        render_mode = RenderMode.OnScreen(threshold=threshold, margin=margin)
+    else:
+        render_mode = RenderMode.OnClick()
+    
+    # Parse direction
+    direction_str = getattr(app_config, 'jsoncrack_direction', 'RIGHT')
+    direction = Directions(direction_str)
+    
+    # Parse theme
+    theme_str = getattr(app_config, 'jsoncrack_theme', None)
+    if theme_str == 'light':
+        theme = Theme.LIGHT
+    elif theme_str == 'dark':
+        theme = Theme.DARK
+    else:
+        theme = Theme.AUTO
+    
+    # Parse container settings
+    height = getattr(app_config, 'jsoncrack_height', '500')
+    width = getattr(app_config, 'jsoncrack_width', '100%')
+    
+    return JsonCrackConfig(
+        render=RenderConfig(render_mode),
+        container=ContainerConfig(direction=direction, height=height, width=width),
+        theme=theme
+    )
 
 
 class SchemaDirective(SphinxDirective):
@@ -31,6 +81,8 @@ class SchemaDirective(SphinxDirective):
         'direction': directives.unchanged,
         'height': directives.unchanged,
         'width': directives.unchanged,
+        'onscreen_threshold': directives.unchanged,
+        'onscreen_margin': directives.unchanged,
     }
     
     def run(self) -> List[nodes.Node]:
@@ -76,12 +128,25 @@ class SchemaDirective(SphinxDirective):
         """Generate HTML for JSONCrack visualization of a schema file."""
         config = self.env.config
         
-        # Get options from directive or config
-        render_mode = self.options.get('render_mode') or getattr(config, 'jsoncrack_render_mode', 'onclick')
-        theme = self.options.get('theme') or getattr(config, 'jsoncrack_theme', None)
-        direction = self.options.get('direction') or getattr(config, 'jsoncrack_direction', 'RIGHT')
-        height = self.options.get('height') or getattr(config, 'jsoncrack_height', '500')
-        width = self.options.get('width') or getattr(config, 'jsoncrack_width', '100%')
+        # Get configuration
+        jsoncrack_config = get_jsoncrack_config(config)
+        config_values = get_config_values(jsoncrack_config)
+        
+        # Override with directive options if provided
+        if 'render_mode' in self.options:
+            config_values['render_mode'] = self.options['render_mode']
+        if 'theme' in self.options:
+            config_values['theme'] = self.options['theme']
+        if 'direction' in self.options:
+            config_values['direction'] = self.options['direction']
+        if 'height' in self.options:
+            config_values['height'] = self.options['height']
+        if 'width' in self.options:
+            config_values['width'] = self.options['width']
+        if 'onscreen_threshold' in self.options:
+            config_values['onscreen_threshold'] = self.options['onscreen_threshold']
+        if 'onscreen_margin' in self.options:
+            config_values['onscreen_margin'] = self.options['onscreen_margin']
         
         # Read schema file
         try:
@@ -97,11 +162,13 @@ class SchemaDirective(SphinxDirective):
             html_content = f'''
             <div class="jsoncrack-container" 
                  data-schema="{schema_str}"
-                 data-render-mode="{render_mode}"
-                 data-theme="{theme or ''}"
-                 data-direction="{direction}"
-                 data-height="{height}"
-                 data-width="{width}">
+                 data-render-mode="{config_values['render_mode']}"
+                 data-theme="{config_values['theme'] or ''}"
+                 data-direction="{config_values['direction']}"
+                 data-height="{config_values['height']}"
+                 data-width="{config_values['width']}"
+                 data-onscreen-threshold="{config_values['onscreen_threshold']}"
+                 data-onscreen-margin="{config_values['onscreen_margin']}">
             </div>
             '''
             
@@ -173,12 +240,9 @@ def find_schema_for_object(obj_name: str, schema_dir: str) -> Optional[Tuple[Pat
 def generate_schema_html(schema_path: Path, file_type: str, app_config=None) -> str:
     """Generate HTML representation of a JSON schema or JSON data for JSONCrack."""
     try:
-        # Default config values if not provided
-        render_mode = getattr(app_config, 'jsoncrack_render_mode', 'onclick') if app_config else 'onclick'
-        theme = getattr(app_config, 'jsoncrack_theme', None) if app_config else None
-        direction = getattr(app_config, 'jsoncrack_direction', 'RIGHT') if app_config else 'RIGHT'
-        height = getattr(app_config, 'jsoncrack_height', '500') if app_config else '500'
-        width = getattr(app_config, 'jsoncrack_width', '100%') if app_config else '100%'
+        # Get configuration
+        config = get_jsoncrack_config(app_config) if app_config else JsonCrackConfig()
+        config_values = get_config_values(config)
         
         # Read schema file
         with open(schema_path, 'r', encoding='utf-8') as f:
@@ -210,11 +274,13 @@ def generate_schema_html(schema_path: Path, file_type: str, app_config=None) -> 
         html_content = f'''
         <div class="jsoncrack-container" 
              data-schema="{schema_str}" 
-             data-render-mode="{render_mode}"
-             data-theme="{theme or ''}"
-             data-direction="{direction}"
-             data-height="{height}"
-             data-width="{width}">
+             data-render-mode="{config_values['render_mode']}"
+             data-theme="{config_values['theme'] or ''}"
+             data-direction="{config_values['direction']}"
+             data-height="{config_values['height']}"
+             data-width="{config_values['width']}"
+             data-onscreen-threshold="{config_values['onscreen_threshold']}"
+             data-onscreen-margin="{config_values['onscreen_margin']}">
         </div>
         '''
         
@@ -228,8 +294,6 @@ def autodoc_process_signature(app: Sphinx, what: str, name: str, obj: Any,
                              options: Dict[str, Any], signature: str, 
                              return_annotation: str) -> Optional[Tuple[str, str]]:
     """Process autodoc signatures and add schema information."""
-    logger.info(f"Processing {what}: {name}")
-    
     if what not in ('function', 'method', 'class'):
         return None
     
@@ -237,19 +301,14 @@ def autodoc_process_signature(app: Sphinx, what: str, name: str, obj: Any,
     schema_dir = getattr(config, 'json_schema_dir', None)
     
     if not schema_dir:
-        logger.warning("json_schema_dir not configured")
         return None
-    
-    logger.info(f"Looking for schema in {schema_dir} for {name}")
     
     # Find schema file
     schema_result = find_schema_for_object(name, schema_dir)
     if not schema_result:
-        logger.info(f"No schema found for {name}")
         return None
         
     schema_path, file_type = schema_result
-    logger.info(f"Found schema: {schema_path} (type: {file_type})")
     
     # Store schema path and type to be used later
     if not hasattr(app.env, '_jsoncrack_schema_paths'):
@@ -264,19 +323,15 @@ def autodoc_process_signature(app: Sphinx, what: str, name: str, obj: Any,
 def autodoc_process_docstring(app: Sphinx, what: str, name: str, obj: Any,
                              options: Dict[str, Any], lines: List[str]) -> None:
     """Process docstrings and add schema HTML."""
-    logger.info(f"Processing docstring for {what}: {name}")
-    
     if what not in ('function', 'method', 'class'):
         return
     
     if not hasattr(app.env, '_jsoncrack_schema_paths'):
-        logger.info("No schema paths stored")
         return
     
     schema_paths = getattr(app.env, '_jsoncrack_schema_paths')
     schema_data = schema_paths.get(name)
     if not schema_data:
-        logger.info(f"No schema path found for {name}")
         return
     
     if isinstance(schema_data, str):
@@ -285,8 +340,6 @@ def autodoc_process_docstring(app: Sphinx, what: str, name: str, obj: Any,
         file_type = 'schema'
     else:
         schema_path_str, file_type = schema_data
-    
-    logger.info(f"Adding schema to docstring for {name}: {schema_path_str} (type: {file_type})")
     
     schema_path = Path(schema_path_str)
     
@@ -305,13 +358,18 @@ def autodoc_process_docstring(app: Sphinx, what: str, name: str, obj: Any,
 
 def setup(app: Sphinx) -> Dict[str, Any]:
     """Set up the Sphinx extension."""
-    # Add configuration values
+    # Add configuration values for new structured config
     app.add_config_value('json_schema_dir', None, 'env')
+    app.add_config_value('jsoncrack_default_options', {}, 'env')
+    
+    # Add configuration values for backward compatibility
     app.add_config_value('jsoncrack_render_mode', 'onclick', 'env')
     app.add_config_value('jsoncrack_theme', None, 'env')
     app.add_config_value('jsoncrack_direction', 'RIGHT', 'env')
     app.add_config_value('jsoncrack_height', '500', 'env')
     app.add_config_value('jsoncrack_width', '100%', 'env')
+    app.add_config_value('jsoncrack_onscreen_threshold', 0.1, 'env')
+    app.add_config_value('jsoncrack_onscreen_margin', '50px', 'env')
     
     # Add directive
     app.add_directive('schema', SchemaDirective)

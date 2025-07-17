@@ -1,6 +1,6 @@
 # JSONCrack for Sphinx Extension
 
-[![CI](https://github.com/yourusername/json-schema-for-humans-sphinx/actions/workflows/ci.yml/badge.svg)](https://github.com/yourusername/json-schema-for-humans-sphinx/actions/workflows/ci.yml)
+[![CI](https://github.com/miskler/json-schema-for-humans-sphinx/actions/workflows/ci.yml/badge.svg)](https://github.com/miskler/json-schema-for-humans-sphinx/actions/workflows/ci.yml)
 [![PyPI version](https://badge.fury.io/py/jsoncrack-for-sphinx.svg)](https://badge.fury.io/py/jsoncrack-for-sphinx)
 [![Python versions](https://img.shields.io/pypi/pyversions/jsoncrack-for-sphinx.svg)](https://pypi.org/project/jsoncrack-for-sphinx/)
 
@@ -10,10 +10,12 @@ This package provides a Sphinx extension that automatically adds JSON schemas to
 
 - 🔄 **Automatic schema inclusion**: Schemas are automatically included in autodoc-generated documentation
 - 📁 **Flexible file naming**: Support for multiple naming conventions
-- 🎨 **Beautiful rendering**: Uses json-schema-for-humans for rich HTML output
+- 🎨 **Beautiful rendering**: Uses JSONCrack for rich interactive visualization
 - 🔧 **Manual inclusion**: `schema` directive for manual schema inclusion
 - 🧪 **Testing support**: Fixtures for testing schema documentation
 - 🌙 **Dark mode**: Support for dark theme styling
+- 📊 **Multiple render modes**: `onclick`, `onload`, and `onscreen` loading modes
+- 🔍 **JSON vs Schema**: Supports both JSON schemas (.schema.json) and plain JSON files (.json)
 
 ## Installation
 
@@ -90,19 +92,73 @@ You can also manually include schemas using the `schema` directive:
 
 Configure the extension in your `conf.py`:
 
+### New Structured Configuration (Recommended)
+
+```python
+from jsoncrack_for_sphinx import RenderMode, Directions, Theme, ContainerConfig, RenderConfig
+
+# Required: Directory containing schema files
+json_schema_dir = "path/to/schemas"
+
+# JSONCrack configuration
+jsoncrack_default_options = {
+    'render': RenderConfig(
+        mode=RenderMode.OnClick()  # or OnLoad(), OnScreen(threshold=0.1, margin='50px')
+    ),
+    'container': ContainerConfig(
+        direction=Directions.RIGHT,  # TOP, RIGHT, DOWN, LEFT
+        height='500',  # Height in pixels
+        width='100%'   # Width in pixels or percentage
+    ),
+    'theme': Theme.AUTO  # AUTO, LIGHT, DARK
+}
+```
+
+### Legacy Configuration (Still Supported)
+
 ```python
 # Required: Directory containing schema files
 json_schema_dir = "path/to/schemas"
 
-# Optional: json-schema-for-humans configuration
-json_schema_config = {
-    "minify": True,
-    "deprecated_from_description": True,
-    "default_from_description": True,
-    "expand_buttons": True,
-    "template_name": "js"
-}
+# JSONCrack configuration
+jsoncrack_render_mode = 'onclick'  # 'onclick', 'onload', or 'onscreen'
+jsoncrack_theme = None  # 'light', 'dark' or None (auto-detect from page)
+jsoncrack_direction = 'RIGHT'  # 'TOP', 'RIGHT', 'DOWN', 'LEFT'
+jsoncrack_height = '500'  # Height in pixels
+jsoncrack_width = '100%'  # Width in pixels or percentage
+
+# Onscreen mode configuration
+jsoncrack_onscreen_threshold = 0.1  # Visibility threshold (0.0-1.0)
+jsoncrack_onscreen_margin = '50px'  # Root margin for early loading
 ```
+
+### Render Modes
+
+- **`RenderMode.OnClick()`**: Schema loads when user clicks the button (default)
+- **`RenderMode.OnLoad()`**: Schema loads immediately when page loads
+- **`RenderMode.OnScreen(threshold=0.1, margin='50px')`**: Schema loads automatically when visible
+
+### Render Mode Parameters
+
+- **`threshold`**: Percentage of element that must be visible (0.0-1.0)
+- **`margin`**: Distance before element enters viewport to start loading
+
+### Container Configuration
+
+- **`direction`**: Visualization direction (`Directions.TOP`, `RIGHT`, `DOWN`, `LEFT`)
+- **`height`**: Container height in pixels (string or int)
+- **`width`**: Container width in pixels or percentage (string or int)
+
+### Theme Options
+
+- **`Theme.AUTO`**: Auto-detect from page (default)
+- **`Theme.LIGHT`**: Force light theme
+- **`Theme.DARK`**: Force dark theme
+
+### File Types
+
+- **`.schema.json`**: JSON Schema files - generates fake data using JSF
+- **`.json`**: Plain JSON files - renders the JSON data as-is
 
 ## Testing Support
 

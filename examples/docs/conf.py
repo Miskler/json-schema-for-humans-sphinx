@@ -36,11 +36,19 @@ html_static_path = ['_static']
 json_schema_dir = os.path.join(os.path.dirname(__file__), '..', 'schemas')
 
 # JSONCrack configuration
-jsoncrack_render_mode = 'onclick'  # 'onclick' or 'onload'
-jsoncrack_theme = None  # 'light', 'dark' or None (auto-detect from page)
-jsoncrack_direction = 'DOWN'  # 'TOP', 'RIGHT', 'DOWN', 'LEFT'
-jsoncrack_height = '500'  # в пикселях
-jsoncrack_width = '100%'  # в пикселях или процентах
+from jsoncrack_for_sphinx import RenderMode, Directions, Theme, ContainerConfig, RenderConfig
+
+jsoncrack_default_options = {
+    'render': RenderConfig(
+        mode=RenderMode.OnScreen(threshold=0.1, margin='50px')
+    ),
+    'container': ContainerConfig(
+        direction=Directions.DOWN,
+        height='500',
+        width='100%'
+    ),
+    'theme': Theme.AUTO
+}
 
 # Autodoc configuration
 autodoc_default_options = {

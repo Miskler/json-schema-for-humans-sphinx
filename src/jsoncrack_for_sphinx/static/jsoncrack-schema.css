@@ -17,9 +17,19 @@
     transition: all 0.3s ease;
 }
 
+.jsoncrack-container[data-render-mode="onscreen"] {
+    min-height: 60px;
+    transition: all 0.3s ease;
+}
+
 .jsoncrack-container[data-render-mode="onclick"]:hover {
     border-color: #0366d6;
     box-shadow: 0 2px 8px rgba(3, 102, 214, 0.1);
+}
+
+.jsoncrack-container[data-render-mode="onscreen"]:hover {
+    border-color: #28a745;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.1);
 }
 
 .jsoncrack-button {
@@ -60,6 +70,14 @@
 
 .jsoncrack-button:hover::before {
     content: "🔍";
+}
+
+.jsoncrack-container[data-render-mode="onscreen"] .jsoncrack-button::before {
+    content: "👀";
+}
+
+.jsoncrack-container[data-render-mode="onscreen"] .jsoncrack-button:hover::before {
+    content: "🔄";
 }
 
 .jsoncrack-container iframe {
