@@ -212,5 +212,5 @@ examples/docs/_build/
 **/docs/_build/
 
 # Test artifacts
-test_*.py
+# test_*.py  # Commented out to allow test files
 tmp*

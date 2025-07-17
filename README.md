@@ -86,6 +86,9 @@ You can also manually include schemas using the `schema` directive:
 .. schema:: MyClass.my_method
    :title: Custom Title
    :description: Custom description
+   :render_mode: onclick
+   :direction: RIGHT
+   :height: 500
 ```
 
 ## Configuration Options
