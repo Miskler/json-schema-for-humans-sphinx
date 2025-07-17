@@ -7,7 +7,7 @@ Sphinx documentation based on function and method names.
 """
 
 __version__ = "0.1.0"
-__author__ = "Your Name"
+__author__ = "Miskler"
 
 from .extension import setup
 

@@ -1,4 +1,4 @@
-# JSON Schema for Humans Sphinx Extension
+# JSONCrack for Sphinx Extension
 
 [![CI](https://github.com/yourusername/json-schema-for-humans-sphinx/actions/workflows/ci.yml/badge.svg)](https://github.com/yourusername/json-schema-for-humans-sphinx/actions/workflows/ci.yml)
 [![PyPI version](https://badge.fury.io/py/stoplightio-schema-sphinx.svg)](https://badge.fury.io/py/stoplightio-schema-sphinx)

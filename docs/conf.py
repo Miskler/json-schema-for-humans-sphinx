@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.abspath('../src'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'JSON Schema for Humans Sphinx Extension'
+project = 'JSONCrack Sphinx Extension'
 copyright = '2025, Author'
 author = 'Author'
 release = '0.1.0'

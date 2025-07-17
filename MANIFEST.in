@@ -5,7 +5,7 @@ include requirements-dev.txt
 include Makefile
 include setup.cfg
 
-recursive-include src/stoplightio_schema_sphinx/static *
+recursive-include src/jsoncrack_for_sphinx/static *
 recursive-include examples *
 recursive-include tests *
 

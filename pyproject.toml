@@ -3,11 +3,11 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "stoplightio-schema-sphinx"
+name = "jsoncrack-for-sphinx"
 version = "0.1.0"
-description = "Sphinx extension for automatically adding JSON schemas to documentation"
+description = "Sphinx extension for automatically adding JSON and JSON Schema to documentation"
 authors = [
-    {name = "Your Name", email = "your.email@example.com"}
+    {name = "Miskler"}
 ]
 readme = "README.md"
 license = {text = "MIT"}
@@ -28,8 +28,7 @@ classifiers = [
     "Topic :: Documentation :: Sphinx",
 ]
 dependencies = [
-    "sphinx>=4.0.0",
-    "json-schema-for-humans>=0.40.0",
+    "sphinx>=4.0.0"
 ]
 
 [project.optional-dependencies]
@@ -50,7 +49,7 @@ Repository = "https://github.com/yourusername/json-schema-for-humans-sphinx"
 Issues = "https://github.com/yourusername/json-schema-for-humans-sphinx/issues"
 
 [project.entry-points."sphinx.extensions"]
-stoplightio_schema_sphinx = "stoplightio_schema_sphinx"
+jsoncrack_for_sphinx = "jsoncrack_for_sphinx"
 
 [tool.setuptools.packages.find]
 where = ["src"]
