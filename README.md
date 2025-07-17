@@ -1,8 +1,8 @@
 # JSONCrack for Sphinx Extension
 
 [![CI](https://github.com/yourusername/json-schema-for-humans-sphinx/actions/workflows/ci.yml/badge.svg)](https://github.com/yourusername/json-schema-for-humans-sphinx/actions/workflows/ci.yml)
-[![PyPI version](https://badge.fury.io/py/stoplightio-schema-sphinx.svg)](https://badge.fury.io/py/stoplightio-schema-sphinx)
-[![Python versions](https://img.shields.io/pypi/pyversions/stoplightio-schema-sphinx.svg)](https://pypi.org/project/stoplightio-schema-sphinx/)
+[![PyPI version](https://badge.fury.io/py/jsoncrack-for-sphinx.svg)](https://badge.fury.io/py/jsoncrack-for-sphinx)
+[![Python versions](https://img.shields.io/pypi/pyversions/jsoncrack-for-sphinx.svg)](https://pypi.org/project/jsoncrack-for-sphinx/)
 
 This package provides a Sphinx extension that automatically adds JSON schemas to function and method documentation. It uses [json-schema-for-humans](https://github.com/coveooss/json-schema-for-humans) to generate beautiful, interactive HTML representations of JSON schemas.
 
@@ -18,7 +18,7 @@ This package provides a Sphinx extension that automatically adds JSON schemas to
 ## Installation
 
 ```bash
-pip install stoplightio-schema-sphinx
+pip install jsoncrack-for-sphinx
 ```
 
 ## Quick Start
@@ -30,7 +30,7 @@ Add the extension to your `conf.py`:
 ```python
 extensions = [
     "sphinx.ext.autodoc",
-    "stoplightio_schema_sphinx",
+    "jsoncrack_for_sphinx",
 ]
 
 # Configure schema directory
@@ -109,7 +109,7 @@ json_schema_config = {
 The extension provides fixtures for testing:
 
 ```python
-from stoplightio_schema_sphinx.fixtures import schema_to_rst_fixture
+from jsoncrack_for_sphinx.fixtures import schema_to_rst_fixture
 
 def test_schema_documentation(schema_to_rst_fixture):
     rst_content = schema_to_rst_fixture(schema_path, title="Test Schema")

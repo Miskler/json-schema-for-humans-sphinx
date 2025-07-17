@@ -19,7 +19,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
-    'stoplightio_schema_sphinx',
+    'jsoncrack_for_sphinx',
 ]
 
 templates_path = ['_templates']

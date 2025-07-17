@@ -143,16 +143,23 @@ def find_schema_for_object(obj_name: str, schema_dir: str) -> Optional[Path]:
     if not schema_dir_path.exists():
         return None
     
+    # Extract just the class/function name from full module path
+    # e.g., "example_module.User.create" -> "User.create"
+    #       "example_module.process_data" -> "process_data"
+    parts = obj_name.split('.')
+    if len(parts) >= 2:
+        # Remove module name from the beginning
+        short_name = '.'.join(parts[1:])
+    else:
+        short_name = obj_name
+    
     # Try different naming patterns
     patterns = [
-        f"{obj_name}.schema.json",
-        f"{obj_name}.json",
+        f"{short_name}.schema.json",        # User.create.schema.json
+        f"{short_name}.json",               # User.create.json
+        f"{obj_name}.schema.json",          # example_module.User.create.schema.json
+        f"{obj_name}.json",                 # example_module.User.create.json
     ]
-    
-    # Also try with option names (for methods with multiple schemas)
-    for schema_file in schema_dir_path.glob("*.schema.json"):
-        if schema_file.name.startswith(f"{obj_name}."):
-            patterns.append(schema_file.name)
     
     for pattern in patterns:
         schema_path = schema_dir_path / pattern
@@ -203,6 +210,8 @@ def autodoc_process_signature(app: Sphinx, what: str, name: str, obj: Any,
                              options: Dict[str, Any], signature: str, 
                              return_annotation: str) -> Optional[Tuple[str, str]]:
     """Process autodoc signatures and add schema information."""
+    logger.info(f"Processing {what}: {name}")
+    
     if what not in ('function', 'method', 'class'):
         return None
     
@@ -210,12 +219,18 @@ def autodoc_process_signature(app: Sphinx, what: str, name: str, obj: Any,
     schema_dir = getattr(config, 'json_schema_dir', None)
     
     if not schema_dir:
+        logger.warning("json_schema_dir not configured")
         return None
+    
+    logger.info(f"Looking for schema in {schema_dir} for {name}")
     
     # Find schema file
     schema_path = find_schema_for_object(name, schema_dir)
     if not schema_path:
+        logger.info(f"No schema found for {name}")
         return None
+        
+    logger.info(f"Found schema: {schema_path}")
     
     # Store schema path to be used later
     if not hasattr(app.env, '_jsoncrack_schema_paths'):
@@ -230,16 +245,22 @@ def autodoc_process_signature(app: Sphinx, what: str, name: str, obj: Any,
 def autodoc_process_docstring(app: Sphinx, what: str, name: str, obj: Any,
                              options: Dict[str, Any], lines: List[str]) -> None:
     """Process docstrings and add schema HTML."""
+    logger.info(f"Processing docstring for {what}: {name}")
+    
     if what not in ('function', 'method', 'class'):
         return
     
     if not hasattr(app.env, '_jsoncrack_schema_paths'):
+        logger.info("No schema paths stored")
         return
     
     schema_paths = getattr(app.env, '_jsoncrack_schema_paths')
     schema_path_str = schema_paths.get(name)
     if not schema_path_str:
+        logger.info(f"No schema path found for {name}")
         return
+    
+    logger.info(f"Adding schema to docstring for {name}: {schema_path_str}")
     
     schema_path = Path(schema_path_str)
     

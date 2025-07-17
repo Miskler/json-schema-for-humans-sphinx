@@ -58,7 +58,7 @@ where = ["src"]
 "" = "src"
 
 [tool.setuptools.package-data]
-"stoplightio_schema_sphinx" = ["static/*"]
+"jsoncrack_for_sphinx" = ["static/*"]
 
 [tool.black]
 line-length = 88
