@@ -9,22 +9,22 @@ Sphinx documentation based on function and method names.
 __version__ = "0.1.0"
 __author__ = "Miskler"
 
-from .extension import setup
 from .config import (
-    RenderMode, 
-    Directions, 
-    Theme, 
-    ContainerConfig, 
-    RenderConfig, 
-    JsonCrackConfig
+    ContainerConfig,
+    Directions,
+    JsonCrackConfig,
+    RenderConfig,
+    RenderMode,
+    Theme,
 )
+from .extension import setup
 
 __all__ = [
-    "setup", 
-    "RenderMode", 
-    "Directions", 
-    "Theme", 
-    "ContainerConfig", 
-    "RenderConfig", 
-    "JsonCrackConfig"
+    "setup",
+    "RenderMode",
+    "Directions",
+    "Theme",
+    "ContainerConfig",
+    "RenderConfig",
+    "JsonCrackConfig",
 ]
