@@ -252,7 +252,9 @@ def find_schema_for_object(
     return None
 
 
-def generate_schema_html(schema_path: Path, file_type: str, app_config: Optional[Any] = None) -> str:
+def generate_schema_html(
+    schema_path: Path, file_type: str, app_config: Optional[Any] = None
+) -> str:
     """Generate HTML representation of a JSON schema or JSON data for JSONCrack."""
     try:
         # Get configuration
