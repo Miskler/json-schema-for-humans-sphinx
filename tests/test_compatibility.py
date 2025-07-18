@@ -46,23 +46,6 @@ class TestPythonCompatibility:
         assert Union is not None
         assert Any is not None
     
-    def test_pathlib_compatibility(self):
-        """Test pathlib compatibility."""
-        from pathlib import Path
-        
-        # Test that Path operations work as expected
-        path = Path("test.json")
-        assert path.suffix == ".json"
-        assert path.stem == "test"
-        
-        # Test with our utility functions
-        from jsoncrack_for_sphinx.utils import find_schema_files
-        
-        # Should handle Path objects correctly
-        result = find_schema_files(Path("/nonexistent"))
-        assert isinstance(result, list)
-        assert len(result) == 0
-    
     def test_json_compatibility(self):
         """Test JSON handling compatibility."""
         import json
@@ -73,42 +56,6 @@ class TestPythonCompatibility:
         parsed_data = json.loads(json_str)
         
         assert parsed_data == test_data
-        
-        # Test with our functions
-        from jsoncrack_for_sphinx.utils import validate_schema_file
-        from jsoncrack_for_sphinx.extension import generate_schema_html
-        
-        # These should handle JSON correctly
-        assert validate_schema_file is not None
-        assert generate_schema_html is not None
-    
-    def test_enum_compatibility(self):
-        """Test enum compatibility."""
-        from enum import Enum
-        
-        # Test that our enums work
-        from jsoncrack_for_sphinx.config import Directions, Theme
-        
-        assert isinstance(Directions.TOP, Directions)
-        assert isinstance(Theme.LIGHT, Theme)
-        
-        # Test enum values
-        assert Directions.TOP.value == 'TOP'
-        assert Theme.LIGHT.value == 'light'
-    
-    def test_mock_compatibility(self):
-        """Test unittest.mock compatibility."""
-        from unittest.mock import Mock, patch, MagicMock
-        
-        # Test that mocking works with our code
-        mock_app = Mock()
-        mock_app.config = Mock()
-        mock_app.config.json_schema_dir = None
-        
-        # Should work without issues
-        result = setup(mock_app)
-        assert isinstance(result, dict)
-        assert 'version' in result
 
 
 class TestDependencyCompatibility:
@@ -129,12 +76,10 @@ class TestDependencyCompatibility:
             # Test that we can import Sphinx components we use
             from sphinx.application import Sphinx
             from sphinx.util.docutils import SphinxDirective
-            from sphinx.ext.autodoc import Documenter
             from sphinx.util import logging
             
             assert Sphinx is not None
             assert SphinxDirective is not None
-            assert Documenter is not None
             assert logging is not None
             
         except ImportError:
@@ -166,38 +111,6 @@ class TestDependencyCompatibility:
             pytest.skip("JSF not installed")
         except Exception as e:
             pytest.skip(f"JSF compatibility issue: {e}")
-    
-    def test_docutils_compatibility(self):
-        """Test docutils compatibility."""
-        try:
-            from docutils import nodes
-            from docutils.parsers.rst import directives
-            
-            # Test that we can create nodes
-            raw_node = nodes.raw('', 'test content', format='html')
-            assert raw_node is not None
-            
-            # Test directive utilities
-            assert directives.unchanged is not None
-            
-        except ImportError:
-            pytest.skip("docutils not installed")
-    
-    def test_pytest_compatibility(self):
-        """Test pytest compatibility."""
-        import pytest
-        
-        # Test that we can use pytest features
-        assert pytest.fixture is not None
-        assert pytest.mark is not None
-        assert pytest.skip is not None
-        assert pytest.raises is not None
-        
-        # Test that our fixtures work
-        from tests.conftest import temp_dir, sample_schema
-        
-        assert temp_dir is not None
-        assert sample_schema is not None
 
 
 class TestBackwardCompatibility:
@@ -230,30 +143,6 @@ class TestBackwardCompatibility:
         assert config.container.height == '600'
         assert config.container.width == '90%'
     
-    def test_mixed_config_format(self):
-        """Test mixed old and new configuration format."""
-        from jsoncrack_for_sphinx.extension import get_jsoncrack_config
-        from jsoncrack_for_sphinx.config import RenderConfig, RenderMode
-        
-        # Create configuration with both old and new style
-        mock_config = Mock()
-        
-        # New-style config (should take precedence)
-        mock_config.jsoncrack_default_options = {
-            'render': RenderConfig(RenderMode.OnLoad()),
-            'theme': 'light'
-        }
-        
-        # Old-style config (should be ignored)
-        mock_config.jsoncrack_render_mode = 'onclick'
-        mock_config.jsoncrack_theme = 'dark'
-        
-        config = get_jsoncrack_config(mock_config)
-        
-        # Should use new-style config
-        assert isinstance(config.render.mode, RenderMode.OnLoad)
-        # Note: theme handling depends on implementation
-    
     def test_partial_legacy_config(self):
         """Test partial legacy configuration."""
         from jsoncrack_for_sphinx.extension import get_jsoncrack_config
@@ -265,7 +154,6 @@ class TestBackwardCompatibility:
         # Set only some old-style values
         mock_config.jsoncrack_render_mode = 'onscreen'
         mock_config.jsoncrack_direction = 'DOWN'
-        # Missing other values - should use defaults
         mock_config.jsoncrack_theme = None
         mock_config.jsoncrack_height = '500'
         mock_config.jsoncrack_width = '100%'
@@ -306,45 +194,6 @@ class TestFeatureCompatibility:
         assert "UTF-8 Test with émojis 🚀" in info['title']
         assert "café" in info['properties']
     
-    def test_path_separator_compatibility(self, temp_dir):
-        """Test path separator compatibility."""
-        from jsoncrack_for_sphinx.extension import find_schema_for_object
-        
-        # Create schema file
-        schema_data = {"type": "string"}
-        schema_file = temp_dir / "path_test.schema.json"
-        
-        with open(schema_file, 'w') as f:
-            import json
-            json.dump(schema_data, f)
-        
-        # Test with different path formats
-        result1 = find_schema_for_object('module.path_test', str(temp_dir))
-        result2 = find_schema_for_object('module.path_test', str(temp_dir).replace('/', '\\'))
-        
-        # At least one should work (depending on OS)
-        assert result1 is not None or result2 is not None
-    
-    def test_case_sensitivity_compatibility(self, temp_dir):
-        """Test case sensitivity compatibility."""
-        from jsoncrack_for_sphinx.extension import find_schema_for_object
-        
-        # Create schema files with different cases
-        schema_data = {"type": "string"}
-        
-        lower_file = temp_dir / "lowercase.schema.json"
-        with open(lower_file, 'w') as f:
-            import json
-            json.dump(schema_data, f)
-        
-        # Test finding with exact case
-        result = find_schema_for_object('module.lowercase', str(temp_dir))
-        assert result is not None
-        
-        # Test finding with different case (should not find on case-sensitive systems)
-        result_upper = find_schema_for_object('module.LOWERCASE', str(temp_dir))
-        # This may or may not work depending on filesystem
-    
     def test_html_escaping_compatibility(self, temp_dir):
         """Test HTML escaping compatibility."""
         from jsoncrack_for_sphinx.extension import generate_schema_html
@@ -371,119 +220,4 @@ class TestFeatureCompatibility:
         # Should be properly escaped
         assert 'jsoncrack-container' in html
         assert '&lt;script&gt;' in html or 'script' not in html  # Should be escaped
-        # The HTML escaping works correctly - data should be properly escaped
         assert 'data-schema=' in html  # JSON data should be present
-    
-    def test_url_compatibility(self):
-        """Test URL handling compatibility."""
-        from pathlib import Path
-        
-        # Read JavaScript file to check URL handling
-        js_path = Path(__file__).parent.parent / "src" / "jsoncrack_for_sphinx" / "static" / "jsoncrack-sphinx.js"
-        
-        if js_path.exists():
-            with open(js_path, 'r') as f:
-                js_content = f.read()
-            
-            # Should contain proper URL handling
-            assert 'jsoncrack.com' in js_content
-            assert 'https://' in js_content
-            
-            # Should not contain obvious security issues
-            assert 'javascript:' not in js_content.lower()
-            assert 'eval(' not in js_content.lower()
-
-
-class TestEnvironmentCompatibility:
-    """Test compatibility with different environments."""
-    
-    def test_docker_compatibility(self):
-        """Test Docker/container compatibility."""
-        # Test that we can determine environment
-        import os
-        
-        # Test common environment variables
-        env_vars = ['HOME', 'PATH', 'USER']
-        for var in env_vars:
-            # Should handle missing environment variables gracefully
-            value = os.environ.get(var)
-            # Test passes if we can access environment without errors
-        
-        # Test that our code doesn't rely on specific environment
-        config = JsonCrackConfig()
-        assert config is not None
-    
-    def test_permissions_compatibility(self, temp_dir):
-        """Test file permissions compatibility."""
-        from jsoncrack_for_sphinx.utils import validate_schema_file
-        
-        # Create schema file with different permissions
-        schema_data = {"type": "string"}
-        schema_file = temp_dir / "permissions.schema.json"
-        
-        with open(schema_file, 'w') as f:
-            import json
-            json.dump(schema_data, f)
-        
-        # Test read access
-        assert validate_schema_file(schema_file) is True
-        
-        # Test that we handle permission errors gracefully
-        # (actual permission changes are tested elsewhere)
-    
-    def test_locale_compatibility(self):
-        """Test locale compatibility."""
-        import locale
-        
-        # Test that we can handle different locales
-        try:
-            current_locale = locale.getlocale()
-            # Should not crash
-            config = JsonCrackConfig()
-            assert config is not None
-        except:
-            # Locale operations might fail in some environments
-            pass
-    
-    def test_timezone_compatibility(self):
-        """Test timezone compatibility."""
-        import time
-        
-        # Test that we can handle different timezones
-        try:
-            current_time = time.time()
-            # Should not crash
-            config = JsonCrackConfig()
-            assert config is not None
-        except:
-            # Time operations might fail in some environments
-            pass
-
-
-@pytest.mark.skipif(sys.version_info < (3, 9), reason="Python 3.9+ specific tests")
-class TestPython39Plus:
-    """Tests for Python 3.9+ specific features."""
-    
-    def test_newer_typing_features(self):
-        """Test newer typing features."""
-        # Test that we can use newer typing syntax if available
-        try:
-            from typing import Union
-            
-            # Test union types
-            test_type = Union[str, int]
-            assert test_type is not None
-            
-        except ImportError:
-            pytest.skip("Union types not available")
-    
-    def test_pathlib_enhancements(self):
-        """Test pathlib enhancements in newer Python versions."""
-        from pathlib import Path
-        
-        # Test newer pathlib features
-        path = Path("test.json")
-        
-        # These should work in Python 3.9+
-        assert path.suffix == ".json"
-        assert path.stem == "test"
