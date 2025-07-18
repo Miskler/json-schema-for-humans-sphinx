@@ -1,0 +1,81 @@
+name: 'Reusable Test Workflow'
+
+on:
+  workflow_call:
+    inputs:
+      upload-coverage:
+        description: 'Upload coverage artifacts'
+        required: false
+        default: false
+        type: boolean
+      python-versions:
+        description: 'Python versions as JSON array'
+        required: false
+        default: '["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]'
+        type: string
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ${{ fromJson(inputs.python-versions) }}
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Python Environment
+      uses: ./.github/actions/setup-python-env
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Run tests with coverage
+      run: |
+        pytest --cov=jsoncrack_for_sphinx --cov-report=xml --cov-report=html --cov-report=term-missing
+        
+    - name: Upload coverage to Codecov
+      if: matrix.python-version == '3.11'
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+        
+    - name: Store coverage artifacts
+      if: matrix.python-version == '3.11' && inputs.upload-coverage
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-reports
+        path: |
+          htmlcov/
+          coverage.xml
+          coverage.svg
+
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Python Environment
+      uses: ./.github/actions/setup-python-env
+      with:
+        python-version: '3.11'
+        install-dev: 'false'
+        
+    - name: Install lint dependencies
+      run: |
+        pip install flake8 black isort mypy
+        
+    - name: Run linting
+      run: |
+        flake8 src/ tests/
+        black --check src/ tests/
+        isort --check-only src/ tests/
+        
+    - name: Run type checking
+      run: |
+        mypy src/jsoncrack_for_sphinx/
