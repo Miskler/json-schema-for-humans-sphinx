@@ -1,10 +1,15 @@
 # JSONCrack for Sphinx Extension
 
-[![CI](https://github.com/miskler/json-schema-for-humans-sphinx/actions/workflows/ci.yml/badge.svg)](https://github.com/miskler/json-schema-for-humans-sphinx/actions/workflows/ci.yml)
+[![Tests and Documentation](https://github.com/miskler/json-schema-for-humans-sphinx/actions/workflows/tests_and_docs.yml/badge.svg)](https://github.com/miskler/json-schema-for-humans-sphinx/actions/workflows/tests_and_docs.yml)
 [![PyPI version](https://badge.fury.io/py/jsoncrack-for-sphinx.svg)](https://badge.fury.io/py/jsoncrack-for-sphinx)
 [![Python versions](https://img.shields.io/pypi/pyversions/jsoncrack-for-sphinx.svg)](https://pypi.org/project/jsoncrack-for-sphinx/)
+[![Coverage](https://miskler.github.io/jsoncrack-for-sphinx/coverage.svg)](https://miskler.github.io/jsoncrack-for-sphinx/coverage/)
+[![Tests](https://byob.yarr.is/miskler/jsoncrack-for-sphinx/tests)](https://github.com/miskler/jsoncrack-for-sphinx/actions/workflows/tests_and_docs.yml)
+[![Pass Rate](https://byob.yarr.is/miskler/jsoncrack-for-sphinx/pass-rate)](https://github.com/miskler/jsoncrack-for-sphinx/actions/workflows/tests_and_docs.yml)
 
-This package provides a Sphinx extension that automatically adds JSON schemas to function and method documentation. It uses [json-schema-for-humans](https://github.com/coveooss/json-schema-for-humans) to generate beautiful, interactive HTML representations of JSON schemas.
+📖 **[Documentation](https://miskler.github.io/jsoncrack-for-sphinx/)** | 📊 **[Coverage Report](https://miskler.github.io/jsoncrack-for-sphinx/coverage/)** | 🔬 **[Examples](https://miskler.github.io/jsoncrack-for-sphinx/examples/)**
+
+This package provides a Sphinx extension that automatically adds JSON schemas to function and method documentation. It uses [jsoncrack.com](https://jsoncrack.com/) to generate beautiful, interactive HTML representations of JSON schemas.
 
 ## Features
 
@@ -15,7 +20,7 @@ This package provides a Sphinx extension that automatically adds JSON schemas to
 - 🧪 **Testing support**: Fixtures for testing schema documentation
 - 🌙 **Dark mode**: Support for dark theme styling
 - 📊 **Multiple render modes**: `onclick`, `onload`, and `onscreen` loading modes
-- 🔍 **JSON vs Schema**: Supports both JSON schemas (.schema.json) and plain JSON files (.json)
+- 🔍 **JSON && Schema**: Supports both JSON schemas (.schema.json) and plain JSON files (.json)
 
 ## Installation
 

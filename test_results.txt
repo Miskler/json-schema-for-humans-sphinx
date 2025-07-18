@@ -1,0 +1,5 @@
+ERROR: usage: __main__.py [options] [file_or_dir] [file_or_dir] [...]
+__main__.py: error: unrecognized arguments: --json-report --json-report-file=test_report.json
+  inifile: /home/miskler/Документы/GitHub/json-schema-for-humans-sphinx/pytest.ini
+  rootdir: /home/miskler/Документы/GitHub/json-schema-for-humans-sphinx
+

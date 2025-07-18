@@ -7,12 +7,14 @@ import sys
 
 # Add the source directory to the path
 sys.path.insert(0, os.path.abspath('../src'))
+# Add the examples directory to the path
+sys.path.insert(0, os.path.abspath('../examples'))
 
 # -- Project information -----------------------------------------------------
 
 project = 'JSONCrack Sphinx Extension'
-copyright = '2025, Author'
-author = 'Author'
+copyright = '2025, Miskler'
+author = 'Miskler'
 release = '0.1.0'
 
 # -- General configuration ---------------------------------------------------
@@ -31,8 +33,57 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # -- Options for HTML output -------------------------------------------------
 
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'furo'
 html_static_path = ['_static']
+
+# Custom CSS files
+html_css_files = [
+    'custom.css',
+]
+
+# -- Furo theme options -------------------------------------------------
+
+html_theme_options = {
+    "sidebar_hide_name": True,
+    "navigation_with_keys": True,
+    "top_of_page_button": "edit",
+    "source_repository": "https://github.com/miskler/json-schema-for-humans-sphinx",
+    "source_branch": "main",
+    "source_directory": "docs/",
+    "light_css_variables": {
+        "color-brand-primary": "#2563eb",
+        "color-brand-content": "#2563eb",
+        "color-brand-secondary": "#1d4ed8",
+        "color-admonition-title--note": "#2563eb",
+        "color-admonition-title-background--note": "#eff6ff",
+    },
+    "dark_css_variables": {
+        "color-brand-primary": "#60a5fa",
+        "color-brand-content": "#60a5fa",
+        "color-brand-secondary": "#3b82f6",
+        "color-admonition-title--note": "#60a5fa",
+        "color-admonition-title-background--note": "#1e3a8a",
+    },
+    "announcement": "🚀 New JSONCrack Sphinx Extension - Enhanced schema visualization!",
+}
+
+# Configure the schema directory for examples
+json_schema_dir = os.path.join(os.path.dirname(__file__), '..', 'examples', 'schemas')
+
+# JSONCrack configuration
+from jsoncrack_for_sphinx import RenderMode, Directions, Theme, ContainerConfig, RenderConfig
+
+jsoncrack_default_options = {
+    'render': RenderConfig(
+        mode=RenderMode.OnScreen(threshold=0.1, margin='50px')
+    ),
+    'container': ContainerConfig(
+        direction=Directions.DOWN,
+        height='500',
+        width='100%'
+    ),
+    'theme': Theme.AUTO
+}
 
 # -- Extension configuration -------------------------------------------------
 
