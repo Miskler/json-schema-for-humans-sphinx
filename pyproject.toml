@@ -42,7 +42,6 @@ dev = [
     "flake8>=4.0.0",
     "mypy>=0.900",
     "types-docutils",
-    "types-pytest",
 ]
 
 [project.urls]

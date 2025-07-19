@@ -69,6 +69,7 @@ jobs:
     - name: Install lint dependencies
       run: |
         pip install flake8 black isort mypy
+        mypy --install-types
         
     - name: Run linting
       run: |
