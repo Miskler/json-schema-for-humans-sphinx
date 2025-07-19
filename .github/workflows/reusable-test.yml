@@ -64,12 +64,6 @@ jobs:
       uses: ./.github/actions/setup-python-env
       with:
         python-version: '3.11'
-        install-dev: 'false'
-        
-    - name: Install lint dependencies
-      run: |
-        pip install flake8 black isort mypy
-        mypy --install-types
         
     - name: Run linting
       run: |

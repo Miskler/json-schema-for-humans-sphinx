@@ -20,8 +20,4 @@ runs:
       shell: bash
       run: |
         python -m pip install --upgrade pip
-        if [ "${{ inputs.install-dev }}" == "true" ]; then
-          pip install -r requirements-dev.txt
-        else
-          pip install -e .
-        fi
+        pip install -r requirements-dev.txt
