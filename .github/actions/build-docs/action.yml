@@ -19,25 +19,6 @@ runs:
         cd examples/docs
         sphinx-build -b html . _build/html
         
-    - name: Generate coverage badge
-      shell: bash
-      run: |
-        pip install coverage-badge
-        coverage-badge -o coverage.svg
-        echo "✓ Coverage badge generated successfully"
-        
-    - name: Run tests for badge generation
-      shell: bash
-      run: |
-        pytest --tb=short -v --json-report --json-report-file=test_report.json > test_results.txt 2>&1 || true
-        
-    - name: Generate test badges
-      shell: bash
-      run: |
-        if [ -f ".github/scripts/generate_badges.py" ]; then
-          python .github/scripts/generate_badges.py
-        fi
-        
     - name: Prepare site structure
       id: build
       shell: bash
@@ -56,10 +37,5 @@ runs:
         
         # Add coverage badge
         cp coverage.svg _site/
-        
-        # Create reports page
-        if [ -f ".github/scripts/create-reports-page.sh" ]; then
-          bash .github/scripts/create-reports-page.sh
-        fi
         
         echo "site-path=_site" >> $GITHUB_OUTPUT

@@ -34,6 +34,12 @@ jobs:
       run: |
         pytest --cov=jsoncrack_for_sphinx --cov-report=xml --cov-report=html --cov-report=term-missing
         
+    - name: Generate coverage badge
+      if: matrix.python-version == '3.11'
+      uses: tj-actions/coverage-badge-py@v2
+      with:
+        output: coverage.svg
+        
     - name: Upload coverage to Codecov
       if: matrix.python-version == '3.11'
       uses: codecov/codecov-action@v3
@@ -51,7 +57,7 @@ jobs:
         path: |
           htmlcov/
           coverage.xml
-          .coverage
+          coverage.svg
 
   lint:
     runs-on: ubuntu-latest
