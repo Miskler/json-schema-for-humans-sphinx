@@ -51,7 +51,7 @@ jobs:
         path: |
           htmlcov/
           coverage.xml
-          coverage.svg
+          .coverage
 
   lint:
     runs-on: ubuntu-latest
