@@ -5,7 +5,7 @@ Tests for documentation examples and consistency.
 import json
 from pathlib import Path
 
-from jsoncrack_for_sphinx import (
+from jsoncrack_for_sphinx.config import (
     ContainerConfig,
     Directions,
     JsonCrackConfig,

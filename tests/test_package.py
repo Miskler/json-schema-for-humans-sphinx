@@ -5,14 +5,14 @@ Tests for the main package.
 import pytest
 
 import jsoncrack_for_sphinx
-from jsoncrack_for_sphinx import (
+from jsoncrack_for_sphinx import setup
+from jsoncrack_for_sphinx.config import (
     ContainerConfig,
     Directions,
     JsonCrackConfig,
     RenderConfig,
     RenderMode,
     Theme,
-    setup,
 )
 
 
@@ -32,24 +32,19 @@ class TestPackage:
         assert hasattr(jsoncrack_for_sphinx, "setup")
         assert callable(jsoncrack_for_sphinx.setup)
 
-        # Test configuration classes
-        assert hasattr(jsoncrack_for_sphinx, "RenderMode")
-        assert hasattr(jsoncrack_for_sphinx, "Directions")
-        assert hasattr(jsoncrack_for_sphinx, "Theme")
-        assert hasattr(jsoncrack_for_sphinx, "ContainerConfig")
-        assert hasattr(jsoncrack_for_sphinx, "RenderConfig")
-        assert hasattr(jsoncrack_for_sphinx, "JsonCrackConfig")
+        # Test that configuration classes are NOT in main package
+        # They should be imported from .config explicitly
+        assert not hasattr(jsoncrack_for_sphinx, "RenderMode")
+        assert not hasattr(jsoncrack_for_sphinx, "Directions")
+        assert not hasattr(jsoncrack_for_sphinx, "Theme")
+        assert not hasattr(jsoncrack_for_sphinx, "ContainerConfig")
+        assert not hasattr(jsoncrack_for_sphinx, "RenderConfig")
+        assert not hasattr(jsoncrack_for_sphinx, "JsonCrackConfig")
 
     def test_package_all_attribute(self):
         """Test that __all__ contains the expected exports."""
         expected_exports = [
             "setup",
-            "RenderMode",
-            "Directions",
-            "Theme",
-            "ContainerConfig",
-            "RenderConfig",
-            "JsonCrackConfig",
         ]
 
         assert hasattr(jsoncrack_for_sphinx, "__all__")
@@ -63,7 +58,7 @@ class TestPackage:
         assert callable(setup)
 
         # Test config imports
-        from jsoncrack_for_sphinx import Directions, RenderMode, Theme
+        from jsoncrack_for_sphinx.config import Directions, RenderMode, Theme
 
         assert hasattr(RenderMode, "OnClick")
         assert hasattr(RenderMode, "OnLoad")
@@ -77,7 +72,11 @@ class TestPackage:
         assert hasattr(Theme, "AUTO")
 
         # Test configuration classes
-        from jsoncrack_for_sphinx import ContainerConfig, JsonCrackConfig, RenderConfig
+        from jsoncrack_for_sphinx.config import (
+            ContainerConfig,
+            JsonCrackConfig,
+            RenderConfig,
+        )
 
         assert callable(ContainerConfig)
         assert callable(RenderConfig)
@@ -218,8 +217,8 @@ class TestPackage:
         # Both should be the same function
         assert main_setup is ext_setup
 
-        # Test that configuration classes are accessible
-        from jsoncrack_for_sphinx import JsonCrackConfig
+        # Test that configuration classes are accessible from .config
+        from jsoncrack_for_sphinx.config import JsonCrackConfig
 
         config = JsonCrackConfig()
         assert config is not None
@@ -228,12 +227,12 @@ class TestPackage:
         """Test that package handles errors gracefully."""
         # Test that invalid configurations don't crash
         try:
-            config = JsonCrackConfig(render=None, container=None, theme=None)
+            config = JsonCrackConfig(render=None, container=None)
             # Should use defaults
             assert config.render is not None
             assert config.container is not None
-            # Theme can be None - that's valid
-            assert config.theme is None or config.theme is not None
+            # Theme should be AUTO by default
+            assert config.theme == Theme.AUTO
         except Exception as e:
             pytest.fail(f"Package should handle None values gracefully: {e}")
 

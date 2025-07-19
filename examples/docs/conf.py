@@ -36,7 +36,7 @@ html_static_path = ['_static']
 json_schema_dir = os.path.join(os.path.dirname(__file__), '..', 'schemas')
 
 # JSONCrack configuration
-from jsoncrack_for_sphinx import RenderMode, Directions, Theme, ContainerConfig, RenderConfig
+from jsoncrack_for_sphinx.config import RenderMode, Directions, Theme, ContainerConfig, RenderConfig
 
 jsoncrack_default_options = {
     'render': RenderConfig(

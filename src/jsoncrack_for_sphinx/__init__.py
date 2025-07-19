@@ -12,5 +12,5 @@ __author__ = "Miskler"
 from .extension import setup
 
 __all__ = [
-    "setup"
+    "setup",
 ]
