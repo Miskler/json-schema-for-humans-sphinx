@@ -1,7 +1,7 @@
-JSON Schema for Humans Sphinx Extension
-=======================================
+JSONCrack for Sphinx Extension
+=============================
 
-Welcome to the documentation for the JSON Schema for Humans Sphinx Extension.
+Welcome to the documentation for the JSONCrack for Sphinx Extension.
 
 This extension automatically integrates JSON schema documentation into your Sphinx documentation,
 using the `jsoncrack.com <https://jsoncrack.com/>`_ library

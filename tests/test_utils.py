@@ -50,8 +50,8 @@ class TestSchemaToRst:
         with open(invalid_file, "w") as f:
             f.write("invalid json content")
 
-        # The actual implementation raises RuntimeError when the schema processing fails
-        with pytest.raises(RuntimeError, match="Error processing schema file"):
+        # The implementation raises ValueError when JSON parsing fails
+        with pytest.raises(ValueError, match="Invalid JSON in schema file"):
             schema_to_rst(invalid_file)
 
     def test_schema_to_rst_complex_schema(self, temp_dir):
