@@ -1,6 +1,6 @@
 # JSONCrack for Sphinx Extension
 
-[![Tests and Documentation](https://github.com/miskler/json-schema-for-humans-sphinx/actions/workflows/tests_and_docs.yml/badge.svg)](https://github.com/miskler/json-schema-for-humans-sphinx/actions/workflows/tests_and_docs.yml)
+[![Tests and Documentation](https://github.com/miskler/jsoncrack-for-sphinx/actions/workflows/tests_and_docs.yml/badge.svg)](https://github.com/miskler/jsoncrack-for-sphinx/actions/workflows/tests_and_docs.yml)
 [![PyPI version](https://badge.fury.io/py/jsoncrack-for-sphinx.svg)](https://badge.fury.io/py/jsoncrack-for-sphinx)
 [![Python versions](https://img.shields.io/pypi/pyversions/jsoncrack-for-sphinx.svg)](https://pypi.org/project/jsoncrack-for-sphinx/)
 [![Coverage](https://miskler.github.io/jsoncrack-for-sphinx/coverage.svg)](https://miskler.github.io/jsoncrack-for-sphinx/coverage/)
@@ -103,7 +103,7 @@ Configure the extension in your `conf.py`:
 ### New Structured Configuration (Recommended)
 
 ```python
-from jsoncrack_for_sphinx import RenderMode, Directions, Theme, ContainerConfig, RenderConfig
+from jsoncrack_for_sphinx.config import RenderMode, Directions, Theme, ContainerConfig, RenderConfig
 
 # Required: Directory containing schema files
 json_schema_dir = "path/to/schemas"
@@ -185,8 +185,8 @@ def test_schema_documentation(schema_to_rst_fixture):
 ### Setup
 
 ```bash
-git clone https://github.com/yourusername/json-schema-for-humans-sphinx.git
-cd json-schema-for-humans-sphinx
+git clone https://github.com/miskler/jsoncrack-for-sphinx.git
+cd jsoncrack-for-sphinx
 make install-dev
 ```
 

@@ -23,7 +23,7 @@ Default JSONCrack Options
 
 .. code-block:: python
 
-    from jsoncrack_for_sphinx import RenderMode, Directions, Theme, ContainerConfig, RenderConfig
+    from jsoncrack_for_sphinx.config import RenderMode, Directions, Theme, ContainerConfig, RenderConfig
 
     jsoncrack_default_options = {
         'render': RenderConfig(

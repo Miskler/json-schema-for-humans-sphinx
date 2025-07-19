@@ -44,9 +44,9 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/json-schema-for-humans-sphinx"
-Repository = "https://github.com/yourusername/json-schema-for-humans-sphinx"
-Issues = "https://github.com/yourusername/json-schema-for-humans-sphinx/issues"
+Homepage = "https://github.com/miskler/jsoncrack-for-sphinx"
+Repository = "https://github.com/miskler/jsoncrack-for-sphinx"
+Issues = "https://github.com/miskler/jsoncrack-for-sphinx/issues"
 
 [project.entry-points."sphinx.extensions"]
 jsoncrack_for_sphinx = "jsoncrack_for_sphinx"

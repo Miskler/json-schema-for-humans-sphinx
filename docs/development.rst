@@ -20,8 +20,8 @@ Installation
 
 .. code-block:: bash
 
-    git clone https://github.com/miskler/json-schema-for-humans-sphinx.git
-    cd json-schema-for-humans-sphinx
+    git clone https://github.com/miskler/jsoncrack-for-sphinx.git
+    cd jsoncrack-for-sphinx
 
 2. Create and activate a virtual environment:
 
@@ -88,8 +88,8 @@ Project Structure
 
 .. code-block:: text
 
-    json-schema-for-humans-sphinx/
-    ├── src/jsoncrack_for_sphinx/     # Main extension code
+    jsoncrack-for-sphinx/
+    ├── src/jsoncrack_for_sphinx/    # Main extension code
     │   ├── __init__.py              # Package initialization
     │   ├── extension.py             # Main Sphinx extension
     │   ├── config.py                # Configuration classes

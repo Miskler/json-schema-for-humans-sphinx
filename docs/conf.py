@@ -47,7 +47,7 @@ html_theme_options = {
     "sidebar_hide_name": True,
     "navigation_with_keys": True,
     "top_of_page_button": "edit",
-    "source_repository": "https://github.com/miskler/json-schema-for-humans-sphinx",
+    "source_repository": "https://github.com/miskler/jsoncrack-for-sphinx",
     "source_branch": "main",
     "source_directory": "docs/",
     "light_css_variables": {
@@ -71,7 +71,7 @@ html_theme_options = {
 json_schema_dir = os.path.join(os.path.dirname(__file__), '..', 'examples', 'schemas')
 
 # JSONCrack configuration
-from jsoncrack_for_sphinx import RenderMode, Directions, Theme, ContainerConfig, RenderConfig
+from jsoncrack_for_sphinx.config import RenderMode, Directions, Theme, ContainerConfig, RenderConfig
 
 jsoncrack_default_options = {
     'render': RenderConfig(
