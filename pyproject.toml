@@ -41,6 +41,8 @@ dev = [
     "isort>=5.0.0",
     "flake8>=4.0.0",
     "mypy>=0.900",
+    "types-docutils",
+    "types-pytest",
 ]
 
 [project.urls]
@@ -76,6 +78,8 @@ python_version = "3.9"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
+show_error_codes = true
+ignore_missing_imports = false
 
 [[tool.mypy.overrides]]
 module = ["jsf", "jsf.*"]
