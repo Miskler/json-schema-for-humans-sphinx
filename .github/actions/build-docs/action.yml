@@ -23,7 +23,16 @@ runs:
       shell: bash
       run: |
         pip install coverage-badge
-        coverage-badge -o coverage.svg
+        if [ -f "coverage.xml" ]; then
+          coverage-badge -f coverage.xml -o coverage.svg
+          echo "✓ Coverage badge generated successfully"
+        else
+          echo "ERROR: coverage.xml not found!"
+          echo "Available files:"
+          ls -la
+          echo "This likely means coverage artifacts were not downloaded properly."
+          exit 1
+        fi
         
     - name: Run tests for badge generation
       shell: bash
