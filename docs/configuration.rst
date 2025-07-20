@@ -227,7 +227,7 @@ This outputs detailed information about:
 * Final schema resolution
 
 Real-World Example
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
 
 For a complex API like ``perekrestok_api.endpoints.catalog.ProductService.similar``:
 
@@ -277,3 +277,16 @@ Configure how the extension handles missing or invalid schemas:
     
     # Log warnings for invalid schemas (default: True)
     jsoncrack_log_warnings = True
+
+Detailed Search Patterns Analysis
+-----------------------------------
+
+For a complete understanding of how the schema search system works, including all possible 
+``SearchPolicy`` parameter combinations and usage examples, see :doc:`search_patterns`.
+
+This page contains:
+
+* Detailed breakdown of all parameter combinations
+* Summary table of search results
+* Practical configuration recommendations
+* Examples for different project structures

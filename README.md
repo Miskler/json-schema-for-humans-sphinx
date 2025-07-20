@@ -7,7 +7,7 @@
 [![Discord](https://img.shields.io/discord/792572437292253224?label=Discord&labelColor=%232c2f33&color=%237289da)](https://discord.gg/UnJnGHNbBp)
 [![Telegram](https://img.shields.io/badge/Telegram-24A1DE)](https://t.me/miskler_dev)
 
-📖 **[Documentation](https://miskler.github.io/jsoncrack-for-sphinx/)** | 📊 **[Coverage Report](https://miskler.github.io/jsoncrack-for-sphinx/coverage/)** | 🔬 **[Examples](https://miskler.github.io/jsoncrack-for-sphinx/examples)**
+📖 **[Documentation](https://miskler.github.io/jsoncrack-for-sphinx/quickstart)** | 📊 **[Coverage Report](https://miskler.github.io/jsoncrack-for-sphinx/coverage/)** | 🔬 **[Examples](https://miskler.github.io/jsoncrack-for-sphinx/examples)**
 
 This package provides a Sphinx extension that automatically adds JSON schemas to function and method documentation. It uses [jsoncrack.com](https://jsoncrack.com/) to generate beautiful, interactive HTML representations of JSON schemas.
 
@@ -83,92 +83,58 @@ The extension searches for schema files using these patterns:
 
 **Note**: If a function belongs to a class, the class name must be included in the filename.
 
-## Advanced Schema Search Configuration
+## Schema Search Policies
 
-### Configurable Search Policy
+The extension provides powerful and flexible schema file search capabilities through configurable search policies:
 
-The extension now supports flexible schema file naming conventions through the `SearchPolicy` configuration:
-
-```python
-from jsoncrack_for_sphinx.config import SearchPolicy, PathSeparator
-
-jsoncrack_default_options = {
-    'search_policy': SearchPolicy(
-        include_package_name=True,  # Include package path in searches
-        include_path_to_file=False,  # Skip intermediate path components like "endpoints.catalog"
-        path_to_file_separator=PathSeparator.SLASH,  # Use / for path separation
-        path_to_class_separator=PathSeparator.DOT,   # Use . for class/method
-        custom_patterns=[  # Additional custom patterns
-            'api_{class_name}_{method_name}.json',
-            '{object_name}_specification.json'
-        ]
-    )
-}
-```
-
-### Path Separators
-
-- **`PathSeparator.DOT`**: Use dots (.) - `MyClass.method.schema.json`
-- **`PathSeparator.SLASH`**: Use slashes (/) - `MyClass/method.schema.json`  
-- **`PathSeparator.NONE`**: No separator - `MyClassmethod.schema.json`
-
-### Search Examples
+### Quick Examples
 
 For object `perekrestok_api.endpoints.catalog.ProductService.similar`:
 
-**Default policy:**
+**Default (include intermediate paths):**
 ```
 ProductService.similar.schema.json          # Highest priority
-catalog.ProductService.similar.schema.json  # If include_path_to_file=True
+catalog.ProductService.similar.schema.json  
+endpoints.catalog.ProductService.similar.schema.json
 similar.schema.json
-perekrestok_api.endpoints.catalog.ProductService.similar.schema.json
 ```
 
-**With include_path_to_file=False (skip intermediate paths):**
+**Skip intermediate paths (cleaner naming):**
 ```python
 SearchPolicy(include_path_to_file=False)
 ```
 ```
-ProductService.similar.schema.json          # Highest priority - only class+method
-similar.schema.json                          # Method name only
-perekrestok_api.endpoints.catalog.ProductService.similar.schema.json  # Full path (fallback)
-# Note: "catalog.ProductService.similar.schema.json" is SKIPPED
-```
-similar.schema.json
-perekrestok_api.endpoints.catalog.ProductService.similar.schema.json
+ProductService.similar.schema.json          # Only class+method
+similar.schema.json                          # Method only
+# Skips: "catalog.ProductService.similar.schema.json"
 ```
 
-**With package names and slash separators:**
+**Directory-based organization:**
 ```python
-SearchPolicy(include_package_name=True, path_to_file_separator=PathSeparator.SLASH)
+SearchPolicy(path_to_file_separator=PathSeparator.SLASH)
 ```
 ```
 ProductService.similar.schema.json
-perekrestok_api/endpoints/catalog/ProductService.similar.schema.json
-catalog/ProductService.similar.schema.json
+endpoints/catalog/ProductService.similar.schema.json  # Uses directories
 similar.schema.json
 ```
 
-**Custom patterns:**
+**Custom API patterns:**
 ```python
 SearchPolicy(custom_patterns=['api_{class_name}_{method_name}.json'])
 ```
 ```
-api_ProductService_similar.json
-ProductService.similar.schema.json
-# ... other default patterns
+api_ProductService_similar.json             # Custom pattern
+ProductService.similar.schema.json          # Standard patterns
 ```
 
-### Debug Logging
+📖 **[Complete Search Patterns Guide](https://miskler.github.io/jsoncrack-for-sphinx/search_patterns.html)** - Detailed analysis of all 8 combinations with examples
 
-Enable debug logging to see schema search process:
+## Advanced Schema Search Configuration
 
-```python
-# In conf.py
-jsoncrack_debug_logging = True
-```
+### Configurable Search Policy
 
-This will output detailed information about which patterns are tried and why schemas are found or not found.
+The extension supports flexible schema file naming conventions through the `SearchPolicy` configuration. See the [Complete Search Patterns Guide](https://miskler.github.io/jsoncrack-for-sphinx/search_patterns.html) for detailed examples and all possible configurations.
 
 ## Manual Schema Inclusion
 

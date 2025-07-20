@@ -19,6 +19,7 @@ to generate beautiful, interactive HTML representations.
    :caption: User Guide:
 
    configuration
+   search_patterns
    usage
    examples
 

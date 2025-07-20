@@ -48,7 +48,7 @@ dev = [
 Homepage = "https://miskler.github.io/jsoncrack-for-sphinx/examples.html"
 Repository = "https://github.com/miskler/jsoncrack-for-sphinx"
 Issues = "https://github.com/miskler/jsoncrack-for-sphinx/issues"
-Documentation = "https://miskler.github.io/jsoncrack-for-sphinx/"
+Documentation = "https://miskler.github.io/jsoncrack-for-sphinx/quickstart"
 
 [project.entry-points."sphinx.extensions"]
 jsoncrack_for_sphinx = "jsoncrack_for_sphinx"

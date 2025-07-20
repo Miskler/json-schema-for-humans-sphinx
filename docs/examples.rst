@@ -124,7 +124,7 @@ This configuration would search for schemas in this order:
 6. ``similar.schema.json`` (method name only)
 
 Debug Output Example
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 
 When ``jsoncrack_debug_logging = True`` is enabled, you'll see output like:
 
