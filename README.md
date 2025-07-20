@@ -1,10 +1,7 @@
 # JSONCrack for Sphinx Extension
 
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/jsoncrack-for-sphinx)
-![PyPI - Package Version](https://img.shields.io/pypi/v/jsoncrack-for-sphinx?color=blue)
-[![Tests](https://miskler.github.io/jsoncrack-for-sphinx/tests.svg)](https://github.com/miskler/jsoncrack-for-sphinx/actions)
-[![PyPI version](https://badge.fury.io/py/jsoncrack-for-sphinx.svg)](https://badge.fury.io/py/jsoncrack-for-sphinx)
-[![Python versions](https://img.shields.io/pypi/pyversions/jsoncrack-for-sphinx.svg)](https://pypi.org/project/jsoncrack-for-sphinx/)
+[![PyPI - Package Version](https://img.shields.io/pypi/v/jsoncrack-for-sphinx?color=blue)](https://pypi.org/project/jsoncrack-for-sphinx/)
 [![Coverage](https://miskler.github.io/jsoncrack-for-sphinx/coverage.svg)](https://miskler.github.io/jsoncrack-for-sphinx/coverage/)
 [![Test Summary](https://miskler.github.io/jsoncrack-for-sphinx/tests-badge.svg)](https://miskler.github.io/jsoncrack-for-sphinx/tests/test-report.html)
 [![Discord](https://img.shields.io/discord/792572437292253224?label=Discord&labelColor=%232c2f33&color=%237289da)](https://discord.gg/UnJnGHNbBp)
