@@ -63,8 +63,7 @@ html_theme_options = {
         "color-brand-secondary": "#3b82f6",
         "color-admonition-title--note": "#60a5fa",
         "color-admonition-title-background--note": "#1e3a8a",
-    },
-    "announcement": "🚀 New JSONCrack Sphinx Extension - Enhanced schema visualization!",
+    }
 }
 
 # Configure the schema directory for examples
