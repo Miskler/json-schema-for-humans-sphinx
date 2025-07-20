@@ -37,5 +37,12 @@ runs:
         
         # Add coverage badge
         cp coverage.svg _site/
-        
+
+        # Add tests report
+        mkdir -p _site/tests
+        cp -r tests-report.html _site/tests/
+
+        # Add tests badge
+        cp tests-badge.svg _site/
+
         echo "site-path=_site" >> $GITHUB_OUTPUT

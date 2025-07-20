@@ -1,13 +1,16 @@
 # JSONCrack for Sphinx Extension
 
-[![Tests and Documentation](https://github.com/miskler/jsoncrack-for-sphinx/actions/workflows/tests_and_docs.yml/badge.svg)](https://github.com/miskler/jsoncrack-for-sphinx/actions/workflows/tests_and_docs.yml)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/jsoncrack-for-sphinx)
+![PyPI - Package Version](https://img.shields.io/pypi/v/jsoncrack-for-sphinx?color=blue)
+[![Tests](https://miskler.github.io/jsoncrack-for-sphinx/tests.svg)](https://github.com/miskler/jsoncrack-for-sphinx/actions)
 [![PyPI version](https://badge.fury.io/py/jsoncrack-for-sphinx.svg)](https://badge.fury.io/py/jsoncrack-for-sphinx)
 [![Python versions](https://img.shields.io/pypi/pyversions/jsoncrack-for-sphinx.svg)](https://pypi.org/project/jsoncrack-for-sphinx/)
 [![Coverage](https://miskler.github.io/jsoncrack-for-sphinx/coverage.svg)](https://miskler.github.io/jsoncrack-for-sphinx/coverage/)
-[![Tests](https://byob.yarr.is/miskler/jsoncrack-for-sphinx/tests)](https://github.com/miskler/jsoncrack-for-sphinx/actions/workflows/tests_and_docs.yml)
-[![Pass Rate](https://byob.yarr.is/miskler/jsoncrack-for-sphinx/pass-rate)](https://github.com/miskler/jsoncrack-for-sphinx/actions/workflows/tests_and_docs.yml)
+[![Test Summary](https://miskler.github.io/jsoncrack-for-sphinx/tests-badge.svg)](https://miskler.github.io/jsoncrack-for-sphinx/tests/test-report.html)
+[![Discord](https://img.shields.io/discord/792572437292253224?label=Discord&labelColor=%232c2f33&color=%237289da)](https://discord.gg/UnJnGHNbBp)
+[![Telegram](https://img.shields.io/badge/Telegram-24A1DE)](https://t.me/miskler_dev)
 
-📖 **[Documentation](https://miskler.github.io/jsoncrack-for-sphinx/)** | 📊 **[Coverage Report](https://miskler.github.io/jsoncrack-for-sphinx/coverage/)** | 🔬 **[Examples](https://miskler.github.io/jsoncrack-for-sphinx/examples/)**
+📖 **[Documentation](https://miskler.github.io/jsoncrack-for-sphinx/)** | 📊 **[Coverage Report](https://miskler.github.io/jsoncrack-for-sphinx/coverage/)** | 🔬 **[Examples](https://miskler.github.io/jsoncrack-for-sphinx/examples)**
 
 This package provides a Sphinx extension that automatically adds JSON schemas to function and method documentation. It uses [jsoncrack.com](https://jsoncrack.com/) to generate beautiful, interactive HTML representations of JSON schemas.
 

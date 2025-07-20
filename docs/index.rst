@@ -1,5 +1,5 @@
 JSONCrack for Sphinx Extension
-=============================
+==============================
 
 Welcome to the documentation for the JSONCrack for Sphinx Extension.
 
