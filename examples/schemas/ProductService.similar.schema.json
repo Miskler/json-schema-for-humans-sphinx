@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "ProductService Similar Response",
+  "description": "Schema for the similar products response from ProductService.similar method",
+  "properties": {
+    "products": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Product ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "Product name"
+          },
+          "price": {
+            "type": "number",
+            "description": "Product price"
+          },
+          "similarity_score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Similarity score to the reference product"
+          },
+          "category": {
+            "type": "string",
+            "description": "Product category"
+          },
+          "brand": {
+            "type": "string",
+            "description": "Product brand"
+          },
+          "image_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Product image URL"
+          }
+        },
+        "required": ["id", "name", "price", "similarity_score"]
+      },
+      "description": "List of similar products"
+    },
+    "total_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total number of similar products found"
+    },
+    "page": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Current page number"
+    },
+    "per_page": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Number of products per page"
+    }
+  },
+  "required": ["products", "total_count", "page", "per_page"]
+}

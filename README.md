@@ -83,6 +83,93 @@ The extension searches for schema files using these patterns:
 
 **Note**: If a function belongs to a class, the class name must be included in the filename.
 
+## Advanced Schema Search Configuration
+
+### Configurable Search Policy
+
+The extension now supports flexible schema file naming conventions through the `SearchPolicy` configuration:
+
+```python
+from jsoncrack_for_sphinx.config import SearchPolicy, PathSeparator
+
+jsoncrack_default_options = {
+    'search_policy': SearchPolicy(
+        include_package_name=True,  # Include package path in searches
+        include_path_to_file=False,  # Skip intermediate path components like "endpoints.catalog"
+        path_to_file_separator=PathSeparator.SLASH,  # Use / for path separation
+        path_to_class_separator=PathSeparator.DOT,   # Use . for class/method
+        custom_patterns=[  # Additional custom patterns
+            'api_{class_name}_{method_name}.json',
+            '{object_name}_specification.json'
+        ]
+    )
+}
+```
+
+### Path Separators
+
+- **`PathSeparator.DOT`**: Use dots (.) - `MyClass.method.schema.json`
+- **`PathSeparator.SLASH`**: Use slashes (/) - `MyClass/method.schema.json`  
+- **`PathSeparator.NONE`**: No separator - `MyClassmethod.schema.json`
+
+### Search Examples
+
+For object `perekrestok_api.endpoints.catalog.ProductService.similar`:
+
+**Default policy:**
+```
+ProductService.similar.schema.json          # Highest priority
+catalog.ProductService.similar.schema.json  # If include_path_to_file=True
+similar.schema.json
+perekrestok_api.endpoints.catalog.ProductService.similar.schema.json
+```
+
+**With include_path_to_file=False (skip intermediate paths):**
+```python
+SearchPolicy(include_path_to_file=False)
+```
+```
+ProductService.similar.schema.json          # Highest priority - only class+method
+similar.schema.json                          # Method name only
+perekrestok_api.endpoints.catalog.ProductService.similar.schema.json  # Full path (fallback)
+# Note: "catalog.ProductService.similar.schema.json" is SKIPPED
+```
+similar.schema.json
+perekrestok_api.endpoints.catalog.ProductService.similar.schema.json
+```
+
+**With package names and slash separators:**
+```python
+SearchPolicy(include_package_name=True, path_to_file_separator=PathSeparator.SLASH)
+```
+```
+ProductService.similar.schema.json
+perekrestok_api/endpoints/catalog/ProductService.similar.schema.json
+catalog/ProductService.similar.schema.json
+similar.schema.json
+```
+
+**Custom patterns:**
+```python
+SearchPolicy(custom_patterns=['api_{class_name}_{method_name}.json'])
+```
+```
+api_ProductService_similar.json
+ProductService.similar.schema.json
+# ... other default patterns
+```
+
+### Debug Logging
+
+Enable debug logging to see schema search process:
+
+```python
+# In conf.py
+jsoncrack_debug_logging = True
+```
+
+This will output detailed information about which patterns are tried and why schemas are found or not found.
+
 ## Manual Schema Inclusion
 
 You can also manually include schemas using the `schema` directive:
@@ -103,7 +190,10 @@ Configure the extension in your `conf.py`:
 ### New Structured Configuration (Recommended)
 
 ```python
-from jsoncrack_for_sphinx.config import RenderMode, Directions, Theme, ContainerConfig, RenderConfig
+from jsoncrack_for_sphinx.config import (
+    RenderMode, Directions, Theme, ContainerConfig, RenderConfig,
+    SearchPolicy, PathSeparator
+)
 
 # Required: Directory containing schema files
 json_schema_dir = "path/to/schemas"
@@ -118,7 +208,13 @@ jsoncrack_default_options = {
         height='500',  # Height in pixels
         width='100%'   # Width in pixels or percentage
     ),
-    'theme': Theme.AUTO  # AUTO, LIGHT, DARK
+    'theme': Theme.AUTO,  # AUTO, LIGHT, DARK
+    'search_policy': SearchPolicy(
+        include_package_name=False,  # Include package path in search patterns
+        path_to_file_separator=PathSeparator.DOT,  # How to separate path components
+        path_to_class_separator=PathSeparator.DOT,  # How to separate class/method
+        custom_patterns=['custom_{class_name}_{method_name}.json']  # Additional patterns
+    )
 }
 ```
 

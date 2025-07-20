@@ -70,7 +70,7 @@ html_theme_options = {
 json_schema_dir = os.path.join(os.path.dirname(__file__), '..', 'examples', 'schemas')
 
 # JSONCrack configuration
-from jsoncrack_for_sphinx.config import RenderMode, Directions, Theme, ContainerConfig, RenderConfig
+from jsoncrack_for_sphinx.config import RenderMode, Directions, Theme, ContainerConfig, RenderConfig, SearchPolicy, PathSeparator
 
 jsoncrack_default_options = {
     'render': RenderConfig(
@@ -81,8 +81,17 @@ jsoncrack_default_options = {
         height='500',
         width='100%'
     ),
-    'theme': Theme.AUTO
+    'theme': Theme.AUTO,
+    'search_policy': SearchPolicy(
+        include_package_name=False,
+        path_to_file_separator=PathSeparator.DOT,
+        path_to_class_separator=PathSeparator.DOT,
+        custom_patterns=[]
+    )
 }
+
+# Enable debug logging for JSONCrack extension
+jsoncrack_debug_logging = True
 
 # -- Extension configuration -------------------------------------------------
 

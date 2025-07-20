@@ -12,6 +12,12 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 Added
 ~~~~~
 
+- **🔍 Configurable Search Policy**: New ``SearchPolicy`` class for flexible schema file naming conventions
+- **📁 Path Separators**: Support for dot, slash, or no separators in file names (``PathSeparator`` enum)
+- **🎯 Custom Search Patterns**: Define custom patterns with placeholders like ``{class_name}`` and ``{method_name}``
+- **📦 Package Path Support**: Option to include or exclude package paths in schema searches
+- **🐛 Debug Logging**: Comprehensive logging for troubleshooting schema detection (``jsoncrack_debug_logging``)
+- **🧪 Enhanced Testing**: Complete test suite for new search functionality
 - Enhanced documentation with Furo theme
 - Comprehensive usage examples
 - Performance optimizations
@@ -20,13 +26,17 @@ Added
 Changed
 ~~~~~~~
 
-- Improved schema file discovery
+- **⚡ Improved Schema Discovery**: Completely rewritten schema search algorithm with priority-based pattern matching
+- **🔧 Backward Compatibility**: Maintained full compatibility with existing configurations and file naming
+- **📖 Enhanced Documentation**: Added comprehensive examples and troubleshooting guides
 - Updated configuration options
 - Enhanced test coverage
 
 Fixed
 ~~~~~
 
+- **🐛 Mock Object Handling**: Fixed ``TypeError`` when processing Mock objects in tests
+- **🎯 Complex Object Names**: Now correctly handles deep package paths like ``perekrestok_api.endpoints.catalog.ProductService.similar``
 - Fixed duplicate files cleanup
 - Resolved configuration enum issues
 - Fixed documentation build process

@@ -23,7 +23,10 @@ Default JSONCrack Options
 
 .. code-block:: python
 
-    from jsoncrack_for_sphinx.config import RenderMode, Directions, Theme, ContainerConfig, RenderConfig
+    from jsoncrack_for_sphinx.config import (
+        RenderMode, Directions, Theme, ContainerConfig, RenderConfig,
+        SearchPolicy, PathSeparator
+    )
 
     jsoncrack_default_options = {
         'render': RenderConfig(
@@ -34,7 +37,12 @@ Default JSONCrack Options
             height='500',
             width='100%'
         ),
-        'theme': Theme.AUTO
+        'theme': Theme.AUTO,
+        'search_policy': SearchPolicy(
+            include_package_name=False,
+            path_to_file_separator=PathSeparator.DOT,
+            path_to_class_separator=PathSeparator.DOT
+        )
     }
 
 Render Modes
@@ -92,6 +100,152 @@ For example, if you have a function ``process_data``, the extension will look fo
 
 * ``process_data.schema.json``
 * ``process_data.json``
+
+Schema Search Policy
+--------------------
+
+Configure how schema files are searched and matched to code objects using the ``SearchPolicy`` class.
+
+Basic Search Policy
+~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    from jsoncrack_for_sphinx.config import SearchPolicy, PathSeparator
+
+    jsoncrack_default_options = {
+        'search_policy': SearchPolicy(
+            include_package_name=False,  # Include package path
+            include_path_to_file=True,   # Include intermediate path components  
+            path_to_file_separator=PathSeparator.DOT,  # Path separator
+            path_to_class_separator=PathSeparator.DOT,  # Class separator
+            custom_patterns=[]  # Additional patterns
+        )
+    }
+
+Path Separators
+~~~~~~~~~~~~~~~
+
+Choose how path components are separated in filenames:
+
+* ``PathSeparator.DOT`` - Use dots: ``MyClass.method.schema.json``
+* ``PathSeparator.SLASH`` - Use slashes: ``MyClass/method.schema.json``
+* ``PathSeparator.NONE`` - No separator: ``MyClassmethod.schema.json``
+
+Path Component Control
+~~~~~~~~~~~~~~~~~~~~~~
+
+Control which parts of the object path are included in search patterns:
+
+* ``include_package_name`` - Whether to include the root package name (e.g., ``mypackage``)
+* ``include_path_to_file`` - Whether to include intermediate path components (e.g., ``module`` in ``mypackage.module.MyClass.method``)
+
+This is useful when you want to skip intermediate namespace parts like ``endpoints.catalog`` in ``perekrestok_api.endpoints.catalog.ProductService.similar``.
+
+Search Examples
+~~~~~~~~~~~~~~~
+
+For the object ``mypackage.module.MyClass.method``:
+
+**Default policy (include intermediate paths, dot separators):**
+
+.. code-block:: text
+
+    MyClass.method.schema.json              # Highest priority
+    module.MyClass.method.schema.json       # Intermediate path included
+    method.schema.json
+    mypackage.module.MyClass.method.schema.json
+
+**Skip intermediate paths:**
+
+.. code-block:: python
+
+    SearchPolicy(
+        include_path_to_file=False
+    )
+
+.. code-block:: text
+
+    MyClass.method.schema.json              # Highest priority
+    method.schema.json                      # Skip "module.MyClass.method"
+    mypackage.module.MyClass.method.schema.json
+
+**With package names and slash separators:**
+
+.. code-block:: python
+
+    SearchPolicy(
+        include_package_name=True,
+        include_path_to_file=True,
+        path_to_file_separator=PathSeparator.SLASH
+    )
+
+.. code-block:: text
+
+    MyClass.method.schema.json
+    mypackage/module/MyClass.method.schema.json
+    module/MyClass.method.schema.json
+    method.schema.json
+
+Custom Patterns
+~~~~~~~~~~~~~~~
+
+Add custom search patterns using placeholders:
+
+.. code-block:: python
+
+    SearchPolicy(
+        custom_patterns=[
+            'api_{class_name}_{method_name}.json',
+            '{object_name}_specification.json',
+            'custom_{method_name}.schema.json'
+        ]
+    )
+
+Available placeholders:
+
+* ``{object_name}`` - Full object name (e.g., ``mypackage.module.MyClass.method``)
+* ``{class_name}`` - Class name only (e.g., ``MyClass``)
+* ``{method_name}`` - Method/function name only (e.g., ``method``)
+* ``{package_name}`` - Package path (e.g., ``mypackage.module``)
+
+Debug Logging
+~~~~~~~~~~~~~
+
+Enable debug logging to troubleshoot schema detection:
+
+.. code-block:: python
+
+    # In conf.py
+    jsoncrack_debug_logging = True
+
+This outputs detailed information about:
+
+* Which patterns are generated and tried
+* Why certain patterns match or don't match
+* File system search results
+* Final schema resolution
+
+Real-World Example
+~~~~~~~~~~~~~~~~~
+
+For a complex API like ``perekrestok_api.endpoints.catalog.ProductService.similar``:
+
+.. code-block:: python
+
+    # This configuration would find ProductService.similar.schema.json
+    SearchPolicy(
+        include_package_name=False,  # Ignore package path
+        path_to_file_separator=PathSeparator.DOT,
+        path_to_class_separator=PathSeparator.DOT
+    )
+
+    # This would also look for perekrestok_api/endpoints/catalog/ProductService.similar.schema.json
+    SearchPolicy(
+        include_package_name=True,
+        path_to_file_separator=PathSeparator.SLASH,
+        path_to_class_separator=PathSeparator.DOT
+    )
 
 Advanced Configuration
 ----------------------
