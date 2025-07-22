@@ -9,7 +9,10 @@ from unittest.mock import Mock
 from jsoncrack_for_sphinx.core.autodoc import autodoc_process_signature
 from jsoncrack_for_sphinx.generators.html_generator import generate_schema_html
 from jsoncrack_for_sphinx.schema.schema_finder import find_schema_for_object
-from jsoncrack_for_sphinx.schema.schema_utils import find_schema_files, validate_schema_file
+from jsoncrack_for_sphinx.schema.schema_utils import (
+    find_schema_files,
+    validate_schema_file,
+)
 
 
 class TestPerformance:

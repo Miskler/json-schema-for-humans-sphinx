@@ -4,13 +4,13 @@ Search pattern generation functionality.
 
 from typing import List, Tuple
 
+from ..search.search_policy import SearchPolicy
 from .pattern_strategies_impl import (
     add_class_method_patterns,
     add_package_name_patterns,
     add_path_component_patterns,
 )
 from .pattern_utils import process_custom_patterns, remove_duplicates
-from ..search.search_policy import SearchPolicy
 
 
 def generate_search_patterns(

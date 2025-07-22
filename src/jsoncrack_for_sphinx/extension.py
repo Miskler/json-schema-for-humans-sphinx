@@ -6,9 +6,6 @@ All functionality has been moved to core.extension.
 """
 
 # Re-export everything from the new location
-from .core.extension import *
-
-# Keep this import for backward compatibility
 from .core.extension import setup
 
 __all__ = ["setup"]

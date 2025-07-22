@@ -78,11 +78,15 @@ class SchemaDirective(SphinxDirective):
     def _generate_schema_html(self, schema_path: Path) -> str:
         """Generate HTML for JSONCrack visualization of a schema file."""
         # Determine file type based on filename
-        file_type = "schema" if schema_path.suffix == ".json" and ".schema." in schema_path.name else "json"
-        
+        file_type = (
+            "schema"
+            if schema_path.suffix == ".json" and ".schema." in schema_path.name
+            else "json"
+        )
+
         # Generate HTML using the same logic as html_generator
         html_content = generate_schema_html(schema_path, file_type, self.env.config)
-        
+
         # Apply directive options to the generated HTML
         config = self.env.config
         jsoncrack_config = get_jsoncrack_config(config)
@@ -103,10 +107,18 @@ class SchemaDirective(SphinxDirective):
             config_values["onscreen_threshold"] = self.options["onscreen_threshold"]
         if "onscreen_margin" in self.options:
             config_values["onscreen_margin"] = self.options["onscreen_margin"]
-        
+
         # Update data attributes in the HTML with directive options
         for key, value in config_values.items():
-            if key in ["render_mode", "theme", "direction", "height", "width", "onscreen_threshold", "onscreen_margin"]:
+            if key in [
+                "render_mode",
+                "theme",
+                "direction",
+                "height",
+                "width",
+                "onscreen_threshold",
+                "onscreen_margin",
+            ]:
                 pattern = f'data-{key.replace("_", "-")}="[^"]*"'
                 replacement = f'data-{key.replace("_", "-")}="{value}"'
                 html_content = re.sub(pattern, replacement, html_content)

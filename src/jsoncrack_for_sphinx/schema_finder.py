@@ -6,9 +6,6 @@ All functionality has been moved to schema.schema_finder.
 """
 
 # Re-export everything from the new location
-from .schema.schema_finder import *
-
-# Keep this import for backward compatibility
 from .schema.schema_finder import find_schema_for_object
 
 __all__ = ["find_schema_for_object"]

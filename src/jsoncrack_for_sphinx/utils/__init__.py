@@ -15,9 +15,13 @@ __all__ = [
 ]
 
 
-def __getattr__(name):
+from typing import Any
+
+
+def __getattr__(name: str) -> Any:
     """Lazy import for backward compatibility."""
     if name == "schema_to_rst":
         from ..generators.rst_generator import schema_to_rst
+
         return schema_to_rst
     raise AttributeError(f"module '{__name__}' has no attribute '{name}'")

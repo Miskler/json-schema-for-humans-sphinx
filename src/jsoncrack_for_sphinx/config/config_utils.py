@@ -4,9 +4,9 @@ Configuration utilities for the JSONCrack Sphinx extension.
 
 from typing import Any, Union
 
+from ..utils.types import Directions, RenderMode, Theme
 from .config_classes import ContainerConfig, RenderConfig
 from .config_parser import JsonCrackConfig, parse_config
-from ..utils.types import Directions, RenderMode, Theme
 
 
 def get_jsoncrack_config(app_config: Any) -> JsonCrackConfig:

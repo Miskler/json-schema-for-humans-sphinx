@@ -4,9 +4,9 @@ Main configuration class.
 
 from typing import Optional
 
-from .config_classes import ContainerConfig, RenderConfig
 from ..search.search_policy import SearchPolicy
 from ..utils.types import RenderMode, Theme
+from .config_classes import ContainerConfig, RenderConfig
 
 
 class JsonCrackConfig:

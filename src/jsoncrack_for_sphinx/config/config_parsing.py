@@ -4,10 +4,10 @@ Configuration parsing functions.
 
 from typing import Any, Dict
 
-from .config_classes import ContainerConfig, RenderConfig
-from .config_main import JsonCrackConfig
 from ..search.search_policy import SearchPolicy
 from ..utils.types import Directions, PathSeparator, RenderMode, Theme
+from .config_classes import ContainerConfig, RenderConfig
+from .config_main import JsonCrackConfig
 
 
 def parse_config(config_dict: Dict[str, Any]) -> JsonCrackConfig:

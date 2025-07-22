@@ -9,15 +9,12 @@ Sphinx documentation based on function and method names.
 __version__ = "0.1.0"
 __author__ = "Miskler"
 
-from .core.extension import setup
-
 # Import main modules for easy access
-from . import config
-from . import utils
-from . import fixtures
+from . import config, fixtures, utils
 
 # Backward compatibility imports
 from .core import extension
+from .core.extension import setup
 from .schema import schema_finder
 
 # Keep __all__ minimal for public API
