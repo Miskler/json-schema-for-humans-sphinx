@@ -85,8 +85,8 @@ class TestPackageImports:
         import jsoncrack_for_sphinx.extension  # noqa: F401
 
         # Test that we can import specific functions
-        from jsoncrack_for_sphinx.extension import setup
-        from jsoncrack_for_sphinx.utils import schema_to_rst
+        from jsoncrack_for_sphinx.core.extension import setup
+        from jsoncrack_for_sphinx.generators.rst_generator import schema_to_rst
 
         # Test that imported items are callable/usable
         assert callable(setup)

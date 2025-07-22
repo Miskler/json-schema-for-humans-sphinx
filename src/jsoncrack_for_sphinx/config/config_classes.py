@@ -4,7 +4,7 @@ Configuration classes for JSONCrack components.
 
 from typing import Union
 
-from .types import Directions, RenderMode
+from ..utils.types import Directions, RenderMode
 
 
 class ContainerConfig:

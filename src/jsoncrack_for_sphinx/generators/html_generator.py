@@ -8,8 +8,8 @@ from typing import Any, Optional
 
 from sphinx.util import logging
 
-from .config_parser import JsonCrackConfig, get_config_values
-from .config_utils import get_jsoncrack_config
+from ..config.config_parser import JsonCrackConfig, get_config_values
+from ..config.config_utils import get_jsoncrack_config
 
 logger = logging.getLogger(__name__)
 

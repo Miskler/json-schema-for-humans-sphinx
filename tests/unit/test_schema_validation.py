@@ -2,7 +2,7 @@
 Tests for schema file validation functionality.
 """
 
-from jsoncrack_for_sphinx.utils import validate_schema_file
+from jsoncrack_for_sphinx.schema.schema_utils import validate_schema_file
 
 
 class TestValidateSchemaFile:

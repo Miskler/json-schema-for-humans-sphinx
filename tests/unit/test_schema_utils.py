@@ -5,7 +5,7 @@ Tests for schema file finding and information extraction.
 import json
 from pathlib import Path
 
-from jsoncrack_for_sphinx.utils import find_schema_files, get_schema_info
+from jsoncrack_for_sphinx.schema.schema_utils import find_schema_files, get_schema_info
 
 
 class TestFindSchemaFiles:

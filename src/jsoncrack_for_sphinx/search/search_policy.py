@@ -4,7 +4,7 @@ Search policy configuration for schema files.
 
 from typing import Optional
 
-from .types import PathSeparator
+from ..utils.types import PathSeparator
 
 
 class SearchPolicy:

@@ -11,7 +11,7 @@ class TestFixtures:
     def test_schema_to_rst_fixture_function(self, schema_to_rst_fixture, schema_file):
         """Test that schema_to_rst_fixture returns the correct function."""
         # The fixture should return the schema_to_rst function
-        from jsoncrack_for_sphinx.utils import schema_to_rst
+        from jsoncrack_for_sphinx.generators.rst_generator import schema_to_rst
 
         assert schema_to_rst_fixture == schema_to_rst
 

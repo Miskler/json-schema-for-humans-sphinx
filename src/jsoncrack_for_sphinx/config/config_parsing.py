@@ -6,8 +6,8 @@ from typing import Any, Dict
 
 from .config_classes import ContainerConfig, RenderConfig
 from .config_main import JsonCrackConfig
-from .search_policy import SearchPolicy
-from .types import Directions, PathSeparator, RenderMode, Theme
+from ..search.search_policy import SearchPolicy
+from ..utils.types import Directions, PathSeparator, RenderMode, Theme
 
 
 def parse_config(config_dict: Dict[str, Any]) -> JsonCrackConfig:

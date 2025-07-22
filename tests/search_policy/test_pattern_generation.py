@@ -3,7 +3,7 @@ Tests for search pattern generation functionality.
 """
 
 from jsoncrack_for_sphinx.config import PathSeparator, SearchPolicy
-from jsoncrack_for_sphinx.pattern_generator import generate_search_patterns
+from jsoncrack_for_sphinx.patterns.pattern_generator import generate_search_patterns
 
 
 class TestGenerateSearchPatterns:

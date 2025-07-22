@@ -10,7 +10,7 @@ from .pattern_strategies_impl import (
     add_path_component_patterns,
 )
 from .pattern_utils import process_custom_patterns, remove_duplicates
-from .search_policy import SearchPolicy
+from ..search.search_policy import SearchPolicy
 
 
 def generate_search_patterns(

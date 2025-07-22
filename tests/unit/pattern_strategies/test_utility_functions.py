@@ -1,6 +1,6 @@
 """Tests for utility functions."""
 
-from jsoncrack_for_sphinx.pattern_strategies import remove_duplicates
+from jsoncrack_for_sphinx.patterns.pattern_strategies import remove_duplicates
 
 
 class TestRemoveDuplicates:

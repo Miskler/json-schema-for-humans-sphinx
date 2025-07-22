@@ -8,7 +8,7 @@ class TestFeatureCompatibility:
 
     def test_file_encoding_compatibility(self, temp_dir):
         """Test file encoding compatibility."""
-        from jsoncrack_for_sphinx.schema_utils import (
+        from jsoncrack_for_sphinx.schema.schema_utils import (
             get_schema_info,
             validate_schema_file,
         )
@@ -33,7 +33,7 @@ class TestFeatureCompatibility:
 
     def test_html_escaping_compatibility(self, temp_dir):
         """Test HTML escaping compatibility."""
-        from jsoncrack_for_sphinx.html_generator import generate_schema_html
+        from jsoncrack_for_sphinx.generators.html_generator import generate_schema_html
 
         # Create schema with HTML-like content
         html_schema = {

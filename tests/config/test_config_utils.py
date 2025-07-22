@@ -11,7 +11,7 @@ from jsoncrack_for_sphinx.config import (
     RenderMode,
     Theme,
 )
-from jsoncrack_for_sphinx.config_utils import get_jsoncrack_config
+from jsoncrack_for_sphinx.config.config_utils import get_jsoncrack_config
 
 
 class TestGetJsoncrackConfig:

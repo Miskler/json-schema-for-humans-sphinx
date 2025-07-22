@@ -8,9 +8,9 @@ from typing import Any, Dict, List, Optional, Tuple
 from sphinx.application import Sphinx
 from sphinx.util import logging
 
-from .config_utils import get_jsoncrack_config
-from .html_generator import generate_schema_html
-from .schema_finder import find_schema_for_object
+from ..config.config_utils import get_jsoncrack_config
+from ..generators.html_generator import generate_schema_html
+from ..schema.schema_finder import find_schema_for_object
 
 logger = logging.getLogger(__name__)
 

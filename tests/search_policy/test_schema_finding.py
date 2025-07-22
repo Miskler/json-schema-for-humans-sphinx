@@ -7,7 +7,7 @@ import tempfile
 from pathlib import Path
 
 from jsoncrack_for_sphinx.config import PathSeparator, SearchPolicy
-from jsoncrack_for_sphinx.schema_finder import find_schema_for_object
+from jsoncrack_for_sphinx.schema.schema_finder import find_schema_for_object
 
 
 class TestFindSchemaForObject:

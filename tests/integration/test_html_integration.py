@@ -5,7 +5,7 @@ Integration tests for HTML generation and JSF functionality.
 import json
 from unittest.mock import Mock, patch
 
-from jsoncrack_for_sphinx.html_generator import generate_schema_html
+from jsoncrack_for_sphinx.generators.html_generator import generate_schema_html
 
 
 class TestHtmlGenerationIntegration:

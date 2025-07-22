@@ -1,7 +1,7 @@
 """Tests for custom pattern processing."""
 
-from jsoncrack_for_sphinx.custom_patterns import process_custom_patterns
-from jsoncrack_for_sphinx.search_policy import SearchPolicy
+from jsoncrack_for_sphinx.patterns.custom_patterns import process_custom_patterns
+from jsoncrack_for_sphinx.search.search_policy import SearchPolicy
 
 
 class TestProcessCustomPatterns:

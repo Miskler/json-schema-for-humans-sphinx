@@ -4,7 +4,7 @@ Tests for schema directive.
 
 from unittest.mock import Mock
 
-from jsoncrack_for_sphinx.directive import SchemaDirective
+from jsoncrack_for_sphinx.core.directive import SchemaDirective
 
 
 class TestSchemaDirective:

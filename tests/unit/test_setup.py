@@ -4,8 +4,8 @@ Tests for extension setup functionality.
 
 from unittest.mock import Mock
 
-from jsoncrack_for_sphinx.directive import SchemaDirective
-from jsoncrack_for_sphinx.extension import setup
+from jsoncrack_for_sphinx.core.directive import SchemaDirective
+from jsoncrack_for_sphinx.core.extension import setup
 
 
 class TestSetup:

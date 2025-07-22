@@ -13,8 +13,8 @@ from jsoncrack_for_sphinx.config import (
     SearchPolicy,
     parse_config,
 )
-from jsoncrack_for_sphinx.pattern_generator import generate_search_patterns
-from jsoncrack_for_sphinx.schema_finder import find_schema_for_object
+from jsoncrack_for_sphinx.patterns.pattern_generator import generate_search_patterns
+from jsoncrack_for_sphinx.schema.schema_finder import find_schema_for_object
 
 
 class TestConfigIntegration:

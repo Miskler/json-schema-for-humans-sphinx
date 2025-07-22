@@ -1,7 +1,7 @@
 """Tests for join functions."""
 
-from jsoncrack_for_sphinx.pattern_strategies import join_with_separator
-from jsoncrack_for_sphinx.types import PathSeparator
+from jsoncrack_for_sphinx.patterns.pattern_strategies import join_with_separator
+from jsoncrack_for_sphinx.utils.types import PathSeparator
 
 
 class TestJoinWithSeparator:

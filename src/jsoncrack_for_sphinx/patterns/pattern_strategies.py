@@ -1,17 +1,27 @@
 """
-Pattern generation strategies for different use cases.
+Pattern generation strategies.
 """
 
-from typing import TYPE_CHECKING, List, Tuple
+from typing import List, Tuple
 
-from .pattern_utils import join_with_separator
+from ..search.search_policy import SearchPolicy
+from ..utils.types import PathSeparator
 
-if TYPE_CHECKING:
-    from .search_policy import SearchPolicy
+
+def join_with_separator(parts_list: List[str], separator: PathSeparator) -> str:
+    """Join parts with the specified separator."""
+    if separator == PathSeparator.DOT:
+        return ".".join(parts_list)
+    elif separator == PathSeparator.SLASH:
+        return "/".join(parts_list)
+    elif separator == PathSeparator.NONE:
+        return "".join(parts_list)
+    else:
+        return ".".join(parts_list)  # fallback
 
 
 def add_class_method_patterns(
-    parts: List[str], search_policy: "SearchPolicy"
+    parts: List[str], search_policy: SearchPolicy
 ) -> List[Tuple[str, str]]:
     """Add class.method patterns."""
     class_method_parts = parts[-2:]  # Last 2 parts
@@ -25,7 +35,7 @@ def add_class_method_patterns(
 
 
 def add_path_component_patterns(
-    parts: List[str], search_policy: "SearchPolicy"
+    parts: List[str], search_policy: SearchPolicy
 ) -> List[Tuple[str, str]]:
     """Add intermediate path component patterns."""
     patterns = []
@@ -47,7 +57,7 @@ def add_path_component_patterns(
     # Include intermediate path components without package name
     if not search_policy.include_package_name and len(parts) >= 3:
         without_package = parts[1:]
-        if search_policy.path_to_file_separator.name == "SLASH":
+        if search_policy.path_to_file_separator == PathSeparator.SLASH:
             patterns.extend(
                 add_slash_separated_patterns(without_package, search_policy)
             )
@@ -66,12 +76,12 @@ def add_path_component_patterns(
 
 
 def add_package_name_patterns(
-    parts: List[str], search_policy: "SearchPolicy"
+    parts: List[str], search_policy: SearchPolicy
 ) -> List[Tuple[str, str]]:
     """Add patterns that include package name."""
     patterns = []
 
-    if search_policy.path_to_file_separator.name == "SLASH":
+    if search_policy.path_to_file_separator == PathSeparator.SLASH:
         if len(parts) >= 2:
             dir_parts = parts[:-2]
             class_method_parts = parts[-2:]
@@ -99,7 +109,7 @@ def add_package_name_patterns(
 
 
 def add_slash_separated_patterns(
-    without_package: List[str], search_policy: "SearchPolicy"
+    without_package: List[str], search_policy: SearchPolicy
 ) -> List[Tuple[str, str]]:
     """Add patterns for slash-separated directory structure."""
     patterns = []
@@ -120,3 +130,15 @@ def add_slash_separated_patterns(
             )
 
     return patterns
+
+
+def remove_duplicates(patterns: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
+    """Remove duplicate patterns while preserving order."""
+    seen = set()
+    unique_patterns = []
+    for pattern, file_type in patterns:
+        key = (pattern, file_type)
+        if key not in seen:
+            seen.add(key)
+            unique_patterns.append((pattern, file_type))
+    return unique_patterns

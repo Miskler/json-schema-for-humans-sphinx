@@ -4,7 +4,7 @@ Custom pattern processing utilities.
 
 from typing import List, Tuple
 
-from .search_policy import SearchPolicy
+from ..search.search_policy import SearchPolicy
 
 
 def process_custom_patterns(

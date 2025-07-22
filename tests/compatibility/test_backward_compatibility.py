@@ -12,7 +12,7 @@ class TestBackwardCompatibility:
 
     def test_legacy_config_format(self):
         """Test that legacy configuration format still works."""
-        from jsoncrack_for_sphinx.config_utils import get_jsoncrack_config
+        from jsoncrack_for_sphinx.config.config_utils import get_jsoncrack_config
 
         # Create old-style configuration
         mock_config = Mock()
@@ -39,7 +39,7 @@ class TestBackwardCompatibility:
 
     def test_partial_legacy_config(self):
         """Test partial legacy configuration."""
-        from jsoncrack_for_sphinx.config_utils import get_jsoncrack_config
+        from jsoncrack_for_sphinx.config.config_utils import get_jsoncrack_config
 
         mock_config = Mock()
         if hasattr(mock_config, "jsoncrack_default_options"):

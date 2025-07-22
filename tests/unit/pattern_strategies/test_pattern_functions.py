@@ -1,13 +1,13 @@
 """Tests for pattern generation functions."""
 
-from jsoncrack_for_sphinx.pattern_strategies import (
+from jsoncrack_for_sphinx.patterns.pattern_strategies import (
     add_class_method_patterns,
     add_package_name_patterns,
     add_path_component_patterns,
     add_slash_separated_patterns,
 )
-from jsoncrack_for_sphinx.search_policy import SearchPolicy
-from jsoncrack_for_sphinx.types import PathSeparator
+from jsoncrack_for_sphinx.search.search_policy import SearchPolicy
+from jsoncrack_for_sphinx.utils.types import PathSeparator
 
 
 class TestAddClassMethodPatterns:

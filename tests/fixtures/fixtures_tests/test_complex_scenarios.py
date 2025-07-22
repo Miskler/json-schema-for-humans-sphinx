@@ -4,7 +4,7 @@ Tests for complex scenarios with helper functions.
 
 import json
 
-from jsoncrack_for_sphinx.fixtures import (
+from jsoncrack_for_sphinx.utils.fixtures import (
     create_function_schema,
     create_method_schema,
     create_option_schema,

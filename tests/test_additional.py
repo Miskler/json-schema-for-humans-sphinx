@@ -5,8 +5,8 @@ Additional edge case tests for the jsoncrack-for-sphinx extension.
 import json
 from unittest.mock import Mock, patch
 
-from jsoncrack_for_sphinx.html_generator import generate_schema_html
-from jsoncrack_for_sphinx.utils import validate_schema_file
+from jsoncrack_for_sphinx.generators.html_generator import generate_schema_html
+from jsoncrack_for_sphinx.schema.schema_utils import validate_schema_file
 
 
 class TestMissingDependencies:
@@ -83,7 +83,7 @@ class TestErrorRecovery:
 
     def test_partial_configuration_recovery(self):
         """Test recovery from partial configuration errors."""
-        from jsoncrack_for_sphinx.config_utils import get_jsoncrack_config
+        from jsoncrack_for_sphinx.config.config_utils import get_jsoncrack_config
 
         # Create configuration with some invalid values
         mock_config = Mock()

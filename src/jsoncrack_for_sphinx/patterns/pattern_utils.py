@@ -4,10 +4,10 @@ Utility functions for pattern generation.
 
 from typing import TYPE_CHECKING, List, Tuple
 
-from .types import PathSeparator
+from ..utils.types import PathSeparator
 
 if TYPE_CHECKING:
-    from .search_policy import SearchPolicy
+    from ..search.search_policy import SearchPolicy
 
 
 def join_with_separator(parts_list: List[str], separator: PathSeparator) -> str:

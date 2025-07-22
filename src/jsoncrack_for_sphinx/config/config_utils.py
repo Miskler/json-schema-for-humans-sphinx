@@ -6,7 +6,7 @@ from typing import Any, Union
 
 from .config_classes import ContainerConfig, RenderConfig
 from .config_parser import JsonCrackConfig, parse_config
-from .types import Directions, RenderMode, Theme
+from ..utils.types import Directions, RenderMode, Theme
 
 
 def get_jsoncrack_config(app_config: Any) -> JsonCrackConfig:

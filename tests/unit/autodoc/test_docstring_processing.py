@@ -4,7 +4,7 @@ Tests for autodoc docstring processing functionality.
 
 from unittest.mock import Mock
 
-from jsoncrack_for_sphinx.autodoc import (
+from jsoncrack_for_sphinx.core.autodoc import (
     autodoc_process_docstring,
 )
 

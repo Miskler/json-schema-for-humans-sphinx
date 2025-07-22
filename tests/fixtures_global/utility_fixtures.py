@@ -4,8 +4,8 @@ Utility fixtures for testing.
 
 import pytest
 
-# Import the function we need for the fixture
-from jsoncrack_for_sphinx.utils import schema_to_rst
+# Import the function we need for the fixture directly from generators
+from jsoncrack_for_sphinx.generators.rst_generator import schema_to_rst
 
 
 @pytest.fixture

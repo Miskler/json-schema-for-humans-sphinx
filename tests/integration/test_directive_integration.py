@@ -6,8 +6,8 @@ import json
 from unittest.mock import Mock
 
 from jsoncrack_for_sphinx import setup
-from jsoncrack_for_sphinx.directive import SchemaDirective
-from jsoncrack_for_sphinx.html_generator import generate_schema_html
+from jsoncrack_for_sphinx.core.directive import SchemaDirective
+from jsoncrack_for_sphinx.generators.html_generator import generate_schema_html
 
 
 class TestDirectiveIntegration:

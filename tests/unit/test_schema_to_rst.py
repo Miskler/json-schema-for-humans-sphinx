@@ -6,7 +6,7 @@ import json
 
 import pytest
 
-from jsoncrack_for_sphinx.utils import schema_to_rst
+from jsoncrack_for_sphinx.generators.rst_generator import schema_to_rst
 
 
 class TestSchemaToRst:

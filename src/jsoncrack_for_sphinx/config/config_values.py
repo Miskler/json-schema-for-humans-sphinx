@@ -5,7 +5,7 @@ Configuration value extraction utilities.
 from typing import Any, Dict
 
 from .config_main import JsonCrackConfig
-from .types import RenderMode, Theme
+from ..utils.types import RenderMode, Theme
 
 
 def get_config_values(config: JsonCrackConfig) -> Dict[str, Any]:

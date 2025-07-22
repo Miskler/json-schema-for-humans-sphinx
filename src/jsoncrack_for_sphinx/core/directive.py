@@ -11,8 +11,8 @@ from docutils.parsers.rst import directives
 from sphinx.util import logging
 from sphinx.util.docutils import SphinxDirective
 
-from .config import get_config_values
-from .config_utils import get_jsoncrack_config
+from ..config import get_config_values
+from ..config.config_utils import get_jsoncrack_config
 
 logger = logging.getLogger(__name__)
 

@@ -15,7 +15,7 @@ class TestPackageCompatibility:
         """Test that package maintains backward compatibility."""
         # Test that old import patterns still work
         from jsoncrack_for_sphinx import setup as main_setup
-        from jsoncrack_for_sphinx.extension import setup as ext_setup
+        from jsoncrack_for_sphinx.core.extension import setup as ext_setup
 
         # Both should be the same function
         assert main_setup is ext_setup
