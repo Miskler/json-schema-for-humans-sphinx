@@ -180,7 +180,9 @@ jsoncrack_default_options = {
         path_to_file_separator=PathSeparator.DOT,  # How to separate path components
         path_to_class_separator=PathSeparator.DOT,  # How to separate class/method
         custom_patterns=['custom_{class_name}_{method_name}.json']  # Additional patterns
-    )
+    ),
+    'disable_autodoc': False,  # Disable automatic schema detection
+    'autodoc_ignore': []  # List of paths to ignore in autodoc (uses "starts with" logic)
 }
 ```
 
@@ -200,6 +202,10 @@ jsoncrack_width = '100%'  # Width in pixels or percentage
 # Onscreen mode configuration
 jsoncrack_onscreen_threshold = 0.1  # Visibility threshold (0.0-1.0)
 jsoncrack_onscreen_margin = '50px'  # Root margin for early loading
+
+# Autodoc control
+jsoncrack_disable_autodoc = False  # Disable automatic schema detection
+jsoncrack_autodoc_ignore = []  # List of paths to ignore in autodoc
 ```
 
 ### Render Modes

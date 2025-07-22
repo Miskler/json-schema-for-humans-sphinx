@@ -15,7 +15,7 @@ sys.path.insert(0, os.path.abspath('../examples'))
 project = 'JSONCrack Sphinx Extension'
 copyright = '2025, Miskler'
 author = 'Miskler'
-release = '0.1.0'
+release = '0.1.1'
 
 # -- General configuration ---------------------------------------------------
 
