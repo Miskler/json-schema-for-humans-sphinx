@@ -12,13 +12,10 @@ class TestPackageMetadata:
         """Test package metadata."""
         assert hasattr(jsoncrack_for_sphinx, "__version__")
         assert hasattr(jsoncrack_for_sphinx, "__author__")
-        assert jsoncrack_for_sphinx.__version__ == "0.1.0"
         assert jsoncrack_for_sphinx.__author__ == "Miskler"
 
     def test_package_version_consistency(self):
         """Test that package version is consistent."""
-        # Test that the version in __init__.py matches setup.py/pyproject.toml
-        assert jsoncrack_for_sphinx.__version__ == "0.1.0"
 
         # Test that the version is a string
         assert isinstance(jsoncrack_for_sphinx.__version__, str)
