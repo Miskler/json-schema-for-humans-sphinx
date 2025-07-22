@@ -1,6 +1,7 @@
 """
 Main entry point for search policy tests.
 
+This module imports all search policy test suites.
 Individual test suites are organized in separate modules:
 - test_search_policy_core.py: PathSeparator and SearchPolicy core tests
 - test_pattern_generation.py: Pattern generation functionality tests
@@ -9,16 +10,10 @@ Individual test suites are organized in separate modules:
 """
 
 # Import all test suites to ensure they are discovered by pytest
-from tests.search_policy.test_search_policy_core import (
-    TestPathSeparator, TestSearchPolicy
-)
-from tests.search_policy.test_pattern_generation import (
-    TestGenerateSearchPatterns
-)
-from tests.search_policy.test_schema_finding import TestFindSchemaForObject
-from tests.search_policy.test_config_regression import (
-    TestConfigIntegration, TestRegressionCases, TestTargetCases
-)
+from .test_search_policy_core import TestPathSeparator, TestSearchPolicy
+from .test_pattern_generation import TestGenerateSearchPatterns
+from .test_schema_finding import TestFindSchemaForObject
+from .test_config_regression import TestConfigIntegration, TestRegressionCases, TestTargetCases
 
 __all__ = [
     "TestPathSeparator",

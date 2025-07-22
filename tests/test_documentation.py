@@ -60,7 +60,7 @@ class TestDocumentationExamples:
 
     def test_example_module_integration(self, temp_dir):
         """Test that examples work with the module."""
-        from jsoncrack_for_sphinx.extension import find_schema_for_object
+        from jsoncrack_for_sphinx.schema_finder import find_schema_for_object
 
         # Create example schema
         schema_data = {

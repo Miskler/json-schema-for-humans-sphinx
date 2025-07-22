@@ -6,11 +6,9 @@ import json
 import time
 from unittest.mock import Mock
 
-from jsoncrack_for_sphinx.extension import (
-    autodoc_process_signature,
-    find_schema_for_object,
-    generate_schema_html,
-)
+from jsoncrack_for_sphinx.autodoc import autodoc_process_signature
+from jsoncrack_for_sphinx.html_generator import generate_schema_html
+from jsoncrack_for_sphinx.schema_finder import find_schema_for_object
 from jsoncrack_for_sphinx.utils import find_schema_files, validate_schema_file
 
 
