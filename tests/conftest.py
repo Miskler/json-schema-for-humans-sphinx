@@ -6,17 +6,18 @@ This module imports all fixtures from submodules for global test use.
 
 import sys
 from pathlib import Path
+
 from fixtures_global.basic_fixtures import (
-    temp_dir,
-    create_test_schema_file,
     create_test_json_file,
+    create_test_schema_file,
+    temp_dir,
 )
-from fixtures_global.data_fixtures import sample_schema, sample_json_data
-from fixtures_global.file_fixtures import schema_file, json_file, schema_dir
+from fixtures_global.data_fixtures import sample_json_data, sample_schema
+from fixtures_global.file_fixtures import json_file, schema_dir, schema_file
 from fixtures_global.sphinx_fixtures import (
+    mock_directive_args,
     mock_sphinx_app,
     mock_sphinx_env,
-    mock_directive_args,
 )
 from fixtures_global.utility_fixtures import schema_to_rst_fixture
 

@@ -8,16 +8,18 @@ Individual test suites are organized in separate modules:
 - test_config_regression.py: Configuration integration and regression tests
 """
 
+from tests.search_policy.test_config_regression import (
+    TestConfigIntegration,
+    TestRegressionCases,
+    TestTargetCases,
+)
+from tests.search_policy.test_pattern_generation import TestGenerateSearchPatterns
+from tests.search_policy.test_schema_finding import TestFindSchemaForObject
+
 # Import all test suites to ensure they are discovered by pytest
 from tests.search_policy.test_search_policy_core import (
-    TestPathSeparator, TestSearchPolicy
-)
-from tests.search_policy.test_pattern_generation import (
-    TestGenerateSearchPatterns
-)
-from tests.search_policy.test_schema_finding import TestFindSchemaForObject
-from tests.search_policy.test_config_regression import (
-    TestConfigIntegration, TestRegressionCases, TestTargetCases
+    TestPathSeparator,
+    TestSearchPolicy,
 )
 
 __all__ = [

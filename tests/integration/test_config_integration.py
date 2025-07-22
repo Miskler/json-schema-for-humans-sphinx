@@ -7,7 +7,11 @@ from pathlib import Path
 from unittest.mock import Mock
 
 from jsoncrack_for_sphinx.config import (
-    ContainerConfig, RenderConfig, Directions, Theme, RenderMode
+    ContainerConfig,
+    Directions,
+    RenderConfig,
+    RenderMode,
+    Theme,
 )
 from jsoncrack_for_sphinx.config_utils import get_jsoncrack_config
 from jsoncrack_for_sphinx.schema_finder import find_schema_for_object

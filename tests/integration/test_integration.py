@@ -12,8 +12,8 @@ Individual test suites are organized in separate modules:
 
 # Import all test suites to ensure they are discovered by pytest
 from .test_basic_workflow import TestBasicWorkflow
-from .test_directive_integration import TestDirectiveIntegration
 from .test_config_integration import TestConfigIntegration
+from .test_directive_integration import TestDirectiveIntegration
 from .test_html_integration import TestHtmlGenerationIntegration
 from .test_sphinx_integration import TestSphinxIntegration
 

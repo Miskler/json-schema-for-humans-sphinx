@@ -70,10 +70,26 @@ def get_schema_info(schema_path: Path) -> Dict[str, Any]:
 
         return info
 
-    except json.JSONDecodeError as e:
-        raise ValueError(f"Invalid JSON in schema file {schema_path}: {e}")
-    except Exception as e:
-        raise RuntimeError(f"Error reading schema file {schema_path}: {e}")
+    except json.JSONDecodeError:
+        # Return default values for invalid JSON
+        return {
+            "file_name": schema_path.name,
+            "title": "",
+            "description": "",
+            "type": "",
+            "properties": [],
+            "required": [],
+        }
+    except Exception:
+        # Return default values for other errors
+        return {
+            "file_name": schema_path.name,
+            "title": "",
+            "description": "",
+            "type": "",
+            "properties": [],
+            "required": [],
+        }
 
 
 def create_schema_index(schema_dir: Path) -> str:

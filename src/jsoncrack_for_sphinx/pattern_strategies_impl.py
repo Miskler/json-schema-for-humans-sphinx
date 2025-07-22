@@ -2,13 +2,16 @@
 Pattern generation strategies for different use cases.
 """
 
-from typing import List, Tuple
+from typing import TYPE_CHECKING, List, Tuple
 
 from .pattern_utils import join_with_separator
 
+if TYPE_CHECKING:
+    from .search_policy import SearchPolicy
+
 
 def add_class_method_patterns(
-    parts: List[str], search_policy
+    parts: List[str], search_policy: "SearchPolicy"
 ) -> List[Tuple[str, str]]:
     """Add class.method patterns."""
     class_method_parts = parts[-2:]  # Last 2 parts
@@ -22,7 +25,7 @@ def add_class_method_patterns(
 
 
 def add_path_component_patterns(
-    parts: List[str], search_policy
+    parts: List[str], search_policy: "SearchPolicy"
 ) -> List[Tuple[str, str]]:
     """Add intermediate path component patterns."""
     patterns = []
@@ -34,33 +37,36 @@ def add_path_component_patterns(
             partial_path = join_with_separator(
                 partial_parts, search_policy.path_to_file_separator
             )
-            patterns.extend([
-                (f"{partial_path}.schema.json", "schema"),
-                (f"{partial_path}.json", "json"),
-            ])
+            patterns.extend(
+                [
+                    (f"{partial_path}.schema.json", "schema"),
+                    (f"{partial_path}.json", "json"),
+                ]
+            )
 
     # Include intermediate path components without package name
     if not search_policy.include_package_name and len(parts) >= 3:
         without_package = parts[1:]
         if search_policy.path_to_file_separator.name == "SLASH":
             patterns.extend(
-                add_slash_separated_patterns(
-                    without_package,
-                    search_policy))
+                add_slash_separated_patterns(without_package, search_policy)
+            )
         else:
             full_path = join_with_separator(
                 without_package, search_policy.path_to_file_separator
             )
-            patterns.extend([
-                (f"{full_path}.schema.json", "schema"),
-                (f"{full_path}.json", "json"),
-            ])
+            patterns.extend(
+                [
+                    (f"{full_path}.schema.json", "schema"),
+                    (f"{full_path}.json", "json"),
+                ]
+            )
 
     return patterns
 
 
 def add_package_name_patterns(
-    parts: List[str], search_policy
+    parts: List[str], search_policy: "SearchPolicy"
 ) -> List[Tuple[str, str]]:
     """Add patterns that include package name."""
     patterns = []
@@ -74,24 +80,26 @@ def add_package_name_patterns(
             )
             if dir_parts:
                 dir_path = "/".join(dir_parts)
-                patterns.extend([
-                    (f"{dir_path}/{class_method}.schema.json", "schema"),
-                    (f"{dir_path}/{class_method}.json", "json"),
-                ])
+                patterns.extend(
+                    [
+                        (f"{dir_path}/{class_method}.schema.json", "schema"),
+                        (f"{dir_path}/{class_method}.json", "json"),
+                    ]
+                )
     else:
-        full_path = join_with_separator(
-            parts, search_policy.path_to_file_separator
+        full_path = join_with_separator(parts, search_policy.path_to_file_separator)
+        patterns.extend(
+            [
+                (f"{full_path}.schema.json", "schema"),
+                (f"{full_path}.json", "json"),
+            ]
         )
-        patterns.extend([
-            (f"{full_path}.schema.json", "schema"),
-            (f"{full_path}.json", "json"),
-        ])
 
     return patterns
 
 
 def add_slash_separated_patterns(
-    without_package: List[str], search_policy
+    without_package: List[str], search_policy: "SearchPolicy"
 ) -> List[Tuple[str, str]]:
     """Add patterns for slash-separated directory structure."""
     patterns = []
@@ -104,9 +112,11 @@ def add_slash_separated_patterns(
         )
         if dir_parts:
             dir_path = "/".join(dir_parts)
-            patterns.extend([
-                (f"{dir_path}/{class_method}.schema.json", "schema"),
-                (f"{dir_path}/{class_method}.json", "json"),
-            ])
+            patterns.extend(
+                [
+                    (f"{dir_path}/{class_method}.schema.json", "schema"),
+                    (f"{dir_path}/{class_method}.json", "json"),
+                ]
+            )
 
     return patterns

@@ -22,7 +22,7 @@ class TestPackageIntegration:
 
         # Test optional dependencies
         try:
-            pass
+            import jsf  # noqa: F401
 
             jsf_available = True
         except ImportError:

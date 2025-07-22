@@ -10,8 +10,8 @@ Individual test suites are organized in separate modules:
 
 # Import all test suites to ensure they are discovered by pytest
 from .test_schema_to_rst import TestSchemaToRst
-from .test_schema_validation import TestValidateSchemaFile
 from .test_schema_utils import TestFindSchemaFiles, TestGetSchemaInfo
+from .test_schema_validation import TestValidateSchemaFile
 
 __all__ = [
     "TestSchemaToRst",

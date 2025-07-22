@@ -9,16 +9,16 @@ Individual test suites are organized in separate modules:
 
 # Import all test suites to ensure they are discovered by pytest
 from .test_config_classes import (
-    TestRenderMode,
-    TestDirections,
-    TestTheme,
     TestContainerConfig,
+    TestDirections,
     TestRenderConfig,
+    TestRenderMode,
+    TestTheme,
 )
 from .test_config_parsing import (
+    TestGetConfigValues,
     TestJsonCrackConfig,
     TestParseConfig,
-    TestGetConfigValues,
 )
 
 __all__ = [

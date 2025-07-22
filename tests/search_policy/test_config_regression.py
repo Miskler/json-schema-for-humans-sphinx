@@ -154,6 +154,7 @@ class TestTargetCases:
     def teardown_method(self):
         """Clean up test directory."""
         import shutil
+
         shutil.rmtree(self.temp_dir)
 
     def create_schema_file(self, filename: str, content: dict = None):

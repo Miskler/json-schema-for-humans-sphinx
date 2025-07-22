@@ -82,7 +82,7 @@ class TestPackageImports:
         """Test that all expected imports work without errors."""
         # Test basic imports
         import jsoncrack_for_sphinx.config
-        import jsoncrack_for_sphinx.extension
+        import jsoncrack_for_sphinx.extension  # noqa: F401
 
         # Test that we can import specific functions
         from jsoncrack_for_sphinx.extension import setup
@@ -93,7 +93,7 @@ class TestPackageImports:
         assert callable(schema_to_rst)
 
         # Test more specific imports
-        from jsoncrack_for_sphinx.config import RenderMode, Theme, Directions
+        from jsoncrack_for_sphinx.config import Directions, RenderMode, Theme
 
         assert RenderMode.OnClick().mode == "onclick"
         assert Theme.LIGHT.value == "light"

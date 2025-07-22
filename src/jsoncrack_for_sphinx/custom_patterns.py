@@ -32,9 +32,11 @@ def process_custom_patterns(
                 patterns.append((expanded_pattern, "json"))
         else:
             # Pattern doesn't have extension, add both variants
-            patterns.extend([
-                (f"{expanded_pattern}.schema.json", "schema"),
-                (f"{expanded_pattern}.json", "json"),
-            ])
+            patterns.extend(
+                [
+                    (f"{expanded_pattern}.schema.json", "schema"),
+                    (f"{expanded_pattern}.json", "json"),
+                ]
+            )
 
     return patterns

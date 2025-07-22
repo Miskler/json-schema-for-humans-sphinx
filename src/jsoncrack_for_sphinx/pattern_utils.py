@@ -2,9 +2,12 @@
 Utility functions for pattern generation.
 """
 
-from typing import List, Tuple
+from typing import TYPE_CHECKING, List, Tuple
 
 from .types import PathSeparator
+
+if TYPE_CHECKING:
+    from .search_policy import SearchPolicy
 
 
 def join_with_separator(parts_list: List[str], separator: PathSeparator) -> str:
@@ -32,7 +35,7 @@ def remove_duplicates(patterns: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
 
 
 def process_custom_patterns(
-    parts: List[str], obj_name: str, search_policy
+    parts: List[str], obj_name: str, search_policy: "SearchPolicy"
 ) -> List[Tuple[str, str]]:
     """Process custom patterns with placeholder substitution."""
     patterns = []
@@ -56,9 +59,11 @@ def process_custom_patterns(
                 patterns.append((expanded_pattern, "json"))
         else:
             # Pattern doesn't have extension, add both variants
-            patterns.extend([
-                (f"{expanded_pattern}.schema.json", "schema"),
-                (f"{expanded_pattern}.json", "json"),
-            ])
+            patterns.extend(
+                [
+                    (f"{expanded_pattern}.schema.json", "schema"),
+                    (f"{expanded_pattern}.json", "json"),
+                ]
+            )
 
     return patterns

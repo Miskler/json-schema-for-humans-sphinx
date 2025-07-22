@@ -2,8 +2,6 @@
 Tests for package metadata and version information.
 """
 
-import pytest
-
 import jsoncrack_for_sphinx
 
 
@@ -28,7 +26,8 @@ class TestPackageMetadata:
         # Test that the version follows semantic versioning
         version_parts = jsoncrack_for_sphinx.__version__.split(".")
         assert len(version_parts) >= 2  # At least major.minor
-        assert all(part.isdigit() for part in version_parts[:2])  # major and minor are digits
+        # major and minor are digits
+        assert all(part.isdigit() for part in version_parts[:2])
 
     def test_package_documentation(self):
         """Test that package has documentation."""
@@ -38,5 +37,6 @@ class TestPackageMetadata:
 
         # Test that setup function has documentation
         from jsoncrack_for_sphinx import setup
+
         assert setup.__doc__ is not None
         assert len(setup.__doc__.strip()) > 0

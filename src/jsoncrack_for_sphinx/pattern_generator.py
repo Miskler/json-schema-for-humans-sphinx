@@ -4,13 +4,13 @@ Search pattern generation functionality.
 
 from typing import List, Tuple
 
-from .search_policy import SearchPolicy
-from .pattern_utils import process_custom_patterns, remove_duplicates
 from .pattern_strategies_impl import (
     add_class_method_patterns,
-    add_path_component_patterns,
     add_package_name_patterns,
+    add_path_component_patterns,
 )
+from .pattern_utils import process_custom_patterns, remove_duplicates
+from .search_policy import SearchPolicy
 
 
 def generate_search_patterns(
@@ -47,15 +47,19 @@ def generate_search_patterns(
 
         # Strategy 4: Just method name
         method_name = parts[-1]
-        patterns.extend([
-            (f"{method_name}.schema.json", "schema"),
-            (f"{method_name}.json", "json"),
-        ])
+        patterns.extend(
+            [
+                (f"{method_name}.schema.json", "schema"),
+                (f"{method_name}.json", "json"),
+            ]
+        )
 
     # Strategy 5: Full object name as is (fallback)
-    patterns.extend([
-        (f"{obj_name}.schema.json", "schema"),
-        (f"{obj_name}.json", "json"),
-    ])
+    patterns.extend(
+        [
+            (f"{obj_name}.schema.json", "schema"),
+            (f"{obj_name}.json", "json"),
+        ]
+    )
 
     return remove_duplicates(patterns)
