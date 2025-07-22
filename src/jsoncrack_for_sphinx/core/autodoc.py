@@ -27,6 +27,20 @@ def autodoc_process_signature(
     """Process autodoc signatures and add schema information."""
     logger.debug(f"Processing signature for {what}: {name}")
 
+    # Get configuration
+    jsoncrack_config = get_jsoncrack_config(app.config)
+
+    # Check if autodoc is disabled
+    if jsoncrack_config.disable_autodoc:
+        logger.debug("Autodoc is disabled in configuration")
+        return None
+
+    # Check if this object should be ignored
+    for ignore_pattern in jsoncrack_config.autodoc_ignore:
+        if name.startswith(ignore_pattern):
+            logger.debug(f"Ignoring {name} due to pattern: {ignore_pattern}")
+            return None
+
     if what not in ("function", "method", "class"):
         logger.debug(f"Skipping {what} (not function/method/class)")
         return None
@@ -41,11 +55,8 @@ def autodoc_process_signature(
     logger.debug(f"Searching for schema for {name} in {schema_dir}")
 
     # Get search policy from configuration
-    search_policy = None
-    if hasattr(config, "jsoncrack_default_options"):
-        jsoncrack_config = get_jsoncrack_config(config)
-        search_policy = jsoncrack_config.search_policy
-        logger.debug(f"Using search policy from config: {search_policy}")
+    search_policy = jsoncrack_config.search_policy
+    logger.debug(f"Using search policy from config: {search_policy}")
 
     # Find schema file
     schema_result = find_schema_for_object(name, schema_dir, search_policy)
@@ -77,6 +88,20 @@ def autodoc_process_docstring(
 ) -> None:
     """Process docstrings and add schema HTML."""
     logger.debug(f"Processing docstring for {what}: {name}")
+
+    # Get configuration
+    jsoncrack_config = get_jsoncrack_config(app.config)
+
+    # Check if autodoc is disabled
+    if jsoncrack_config.disable_autodoc:
+        logger.debug("Autodoc is disabled in configuration")
+        return
+
+    # Check if this object should be ignored
+    for ignore_pattern in jsoncrack_config.autodoc_ignore:
+        if name.startswith(ignore_pattern):
+            logger.debug(f"Ignoring {name} due to pattern: {ignore_pattern}")
+            return
 
     if what not in ("function", "method", "class"):
         logger.debug(f"Skipping {what} (not function/method/class)")

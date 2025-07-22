@@ -49,8 +49,14 @@ def get_jsoncrack_config(app_config: Any) -> JsonCrackConfig:
     height = getattr(app_config, "jsoncrack_height", "500")
     width = getattr(app_config, "jsoncrack_width", "100%")
 
+    # Parse new autodoc settings
+    disable_autodoc = getattr(app_config, "jsoncrack_disable_autodoc", False)
+    autodoc_ignore = getattr(app_config, "jsoncrack_autodoc_ignore", [])
+
     return JsonCrackConfig(
         render=RenderConfig(render_mode),
         container=ContainerConfig(direction=direction, height=height, width=width),
         theme=theme,
+        disable_autodoc=disable_autodoc,
+        autodoc_ignore=autodoc_ignore,
     )

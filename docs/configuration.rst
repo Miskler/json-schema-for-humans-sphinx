@@ -42,7 +42,9 @@ Default JSONCrack Options
             include_package_name=False,
             path_to_file_separator=PathSeparator.DOT,
             path_to_class_separator=PathSeparator.DOT
-        )
+        ),
+        'disable_autodoc': False,  # Disable automatic schema detection
+        'autodoc_ignore': []  # List of paths to ignore in autodoc
     }
 
 Render Modes
@@ -249,6 +251,38 @@ For a complex API like ``perekrestok_api.endpoints.catalog.ProductService.simila
 
 Advanced Configuration
 ----------------------
+
+Autodoc Control
+~~~~~~~~~~~~~~~
+
+Control automatic schema detection during autodoc processing:
+
+.. code-block:: python
+
+    jsoncrack_default_options = {
+        # Disable automatic schema detection completely
+        'disable_autodoc': False,  # Default: False
+        
+        # List of full paths to ignore in autodoc
+        # Uses "not starts with" logic - can be specific paths or prefixes
+        'autodoc_ignore': [
+            'mymodule.internal',  # Ignore anything starting with 'mymodule.internal'
+            'tests.',             # Ignore anything in tests package
+            'examples.complex_function',  # Ignore specific function
+        ]
+    }
+
+The ``autodoc_ignore`` setting uses a "starts with" filter. For example:
+
+* ``'mymodule.'`` - ignores all objects in the mymodule package
+* ``'mymodule.ClassName'`` - ignores the class and all its methods
+* ``'mymodule.ClassName.method_name'`` - ignores only this specific method
+
+.. code-block:: python
+
+    # Legacy configuration format also supported
+    jsoncrack_disable_autodoc = False
+    jsoncrack_autodoc_ignore = ['tests.', 'examples.']
 
 Custom Schema Resolvers
 ~~~~~~~~~~~~~~~~~~~~~~~~

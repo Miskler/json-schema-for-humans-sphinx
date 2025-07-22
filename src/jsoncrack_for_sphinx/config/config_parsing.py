@@ -151,4 +151,6 @@ def parse_config(config_dict: Dict[str, Any]) -> JsonCrackConfig:
         container=container_config or ContainerConfig(),
         theme=theme,
         search_policy=search_policy or SearchPolicy(),
+        disable_autodoc=config_dict.get("disable_autodoc", False),
+        autodoc_ignore=config_dict.get("autodoc_ignore", []),
     )

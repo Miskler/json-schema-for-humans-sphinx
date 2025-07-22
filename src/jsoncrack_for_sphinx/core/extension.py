@@ -30,6 +30,8 @@ def setup(app: Sphinx) -> Dict[str, Any]:
     app.add_config_value("jsoncrack_width", "100%", "env")
     app.add_config_value("jsoncrack_onscreen_threshold", 0.1, "env")
     app.add_config_value("jsoncrack_onscreen_margin", "50px", "env")
+    app.add_config_value("jsoncrack_disable_autodoc", False, "env")
+    app.add_config_value("jsoncrack_autodoc_ignore", [], "env")
 
     # Configure logging level if debug is enabled
     if getattr(app.config, "jsoncrack_debug_logging", False):

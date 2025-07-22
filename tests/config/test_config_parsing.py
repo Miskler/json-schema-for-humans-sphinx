@@ -25,6 +25,8 @@ class TestJsonCrackConfig:
         assert config.container.height == "500"
         assert config.container.width == "100%"
         assert config.theme == Theme.AUTO
+        assert config.disable_autodoc is False
+        assert config.autodoc_ignore == []
 
     def test_custom_config(self):
         """Test custom configuration."""
@@ -56,6 +58,15 @@ class TestJsonCrackConfig:
         assert "render" in repr_str
         assert "container" in repr_str
         assert "theme" in repr_str
+
+    def test_custom_config_with_autodoc_settings(self):
+        """Test custom configuration with autodoc settings."""
+        config = JsonCrackConfig(
+            disable_autodoc=True,
+            autodoc_ignore=["test.module", "examples."],
+        )
+        assert config.disable_autodoc is True
+        assert config.autodoc_ignore == ["test.module", "examples."]
 
 
 class TestParseConfig:
@@ -110,6 +121,25 @@ class TestParseConfig:
         assert config.container.direction == Directions.RIGHT  # default
         assert config.container.height == "invalid"  # passed through as string
         assert config.theme == Theme.AUTO  # default for invalid
+
+    def test_parse_config_with_autodoc_settings(self):
+        """Test parsing configuration with autodoc settings."""
+        config_dict = {
+            "disable_autodoc": True,
+            "autodoc_ignore": ["mymodule.test", "examples."],
+        }
+
+        config = parse_config(config_dict)
+        assert config.disable_autodoc is True
+        assert config.autodoc_ignore == ["mymodule.test", "examples."]
+
+    def test_parse_config_without_autodoc_settings(self):
+        """Test parsing configuration without autodoc settings (uses defaults)."""
+        config_dict = {}
+
+        config = parse_config(config_dict)
+        assert config.disable_autodoc is False
+        assert config.autodoc_ignore == []
 
 
 class TestGetConfigValues:
