@@ -46,7 +46,7 @@ def setup(app: Sphinx) -> Dict[str, Any]:
     app.connect("autodoc-process-docstring", autodoc_process_docstring)
 
     # Add CSS and JS for styling and functionality
-    static_path = Path(__file__).parent / "static"
+    static_path = Path(__file__).parent.parent / "static"
     app.config.html_static_path.append(str(static_path))
     app.add_css_file("jsoncrack-schema.css")
     app.add_js_file("jsoncrack-sphinx.js")
